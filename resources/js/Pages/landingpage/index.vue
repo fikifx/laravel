@@ -604,56 +604,65 @@ onUnmounted(() => {
         </section>
 
         <!-- ========= FOOTER ========= -->
-        <footer class="bg-slate-950 py-16">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="grid md:grid-cols-4 gap-10 mb-12">
+        <footer class="bg-slate-950 pt-20 pb-10">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-6 mb-16">
                     <!-- Brand -->
-                    <div class="md:col-span-2">
-                        <div class="flex items-center gap-2.5 mb-5">
-                            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <div class="lg:col-span-4 md:col-span-2 max-w-sm">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50">
                                 <CarFront class="w-5 h-5 text-white" />
                             </div>
-                            <span class="text-lg font-black text-white">Rental<span class="text-blue-400">Banyuwangi</span></span>
+                            <span class="text-xl font-black text-white tracking-tight">Rental<span class="text-blue-500">Banyuwangi</span></span>
                         </div>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
-                            PT. Banyuwangi Trans Wisata — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani sewa mobil dengan sopir dan lepas kunci di seluruh Banyuwangi.
+                        <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                            PT. Banyuwangi Trans Wisata — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani sewa mobil dengan sopir dan lepas kunci di seluruh area Banyuwangi.
                         </p>
-                        <div class="flex items-center gap-3 text-slate-400 text-sm">
-                            <Phone class="w-4 h-4 text-blue-400" />
+                        <div class="flex items-center gap-3 text-slate-300 text-sm font-medium bg-white/5 w-fit px-4 py-2.5 rounded-xl border border-white/5">
+                            <Phone class="w-4 h-4 text-emerald-400" />
                             <span>0823-3933-3202</span>
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-1 animate-pulse"></span>
-                            <span class="text-emerald-400 text-xs font-bold">Online 24/7</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-2 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                            <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">Online 24/7</span>
                         </div>
                     </div>
 
-                    <!-- Quick Links -->
-                    <div>
-                        <h5 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Navigasi</h5>
-                        <ul class="space-y-3">
+                    <!-- Navigation -->
+                    <div class="lg:col-span-2">
+                        <h5 class="text-white font-bold text-sm tracking-widest mb-6 border-b border-white/10 pb-3 inline-block">NAVIGASI</h5>
+                        <ul class="space-y-4">
                             <li v-for="link in [{label:'Beranda', href:'#home'},{label:'Armada',href:'#armada'},{label:'Syarat Sewa',href:'#syarat'},{label:'Ulasan',href:'#reviews'}]" :key="link.label">
-                                <a :href="link.href" class="text-slate-400 hover:text-white text-sm font-medium transition-colors">{{ link.label }}</a>
+                                <a :href="link.href" class="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 group">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-600 opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all"></span>
+                                    {{ link.label }}
+                                </a>
                             </li>
                         </ul>
                     </div>
 
                     <!-- Services -->
-                    <div>
-                        <h5 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Layanan</h5>
-                        <ul class="space-y-3">
-                            <li v-for="svc in ['Sewa Lepas Kunci','Dengan Sopir + BBM','Antar Jemput Bandara','Wisata Banyuwangi','Drop Off Luar Kota']" :key="svc">
-                                <span class="text-slate-400 text-sm font-medium">{{ svc }}</span>
+                    <div class="lg:col-span-3">
+                        <h5 class="text-white font-bold text-sm tracking-widest mb-6 border-b border-white/10 pb-3 inline-block">LAYANAN UTAMA</h5>
+                        <ul class="space-y-4">
+                            <li v-for="svc in ['Sewa Mobil Lepas Kunci','Sewa Mobil + Sopir & BBM','Antar Jemput Bandara Blimbingsari','Paket Wisata Banyuwangi','Drop Off Luar Kota']" :key="svc">
+                                <span class="text-slate-400 hover:text-white transition-colors cursor-default text-sm font-medium flex items-center gap-2">
+                                    <Check class="w-3.5 h-3.5 text-blue-500" />
+                                    {{ svc }}
+                                </span>
                             </li>
                         </ul>
                     </div>
-                </div>
 
-                <!-- Map -->
-                <div class="rounded-2xl overflow-hidden h-48 mb-10 border border-white/5">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.63480694391!2d114.3488593!3d-8.2394277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd145f99fd54fdd%3A0xd68c459bfa1d891!2sTripBanyuwangi!5e0!3m2!1sid!2sid!4v1773287137760!5m2!1sid!2sid"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                        class="grayscale hover:grayscale-0 transition-all duration-500">
-                    </iframe>
+                    <!-- Map -->
+                    <div class="lg:col-span-3 w-full">
+                        <h5 class="text-white font-bold text-sm tracking-widest mb-6 border-b border-white/10 pb-3 inline-block">LOKASI KAMI</h5>
+                        <div class="rounded-xl overflow-hidden h-32 lg:h-40 border border-white/10 shadow-lg shadow-black/50">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.63480694391!2d114.3488593!3d-8.2394277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd145f99fd54fdd%3A0xd68c459bfa1d891!2sTripBanyuwangi!5e0!3m2!1sid!2sid!4v1773287137760!5m2!1sid!2sid"
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                class="grayscale hover:grayscale-0 transition-all duration-500">
+                            </iframe>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Copyright -->

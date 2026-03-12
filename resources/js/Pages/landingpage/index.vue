@@ -1,483 +1,265 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { 
-    CarFront, Menu, X, MessageCircle, ChevronRight, 
-    Star, Users, Settings2, Key, UserCheck, 
-    Check, AlertCircle, Quote, ArrowRight, 
-    MapPin, MapPinned, Phone, Clock, ShieldCheck, 
-    Sparkles, Utensils
+import { ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
+import {
+    CarFront, Menu, X, ChevronRight, Star, Users, Settings2, Key, UserCheck,
+    Check, AlertCircle, Quote, ArrowRight, MapPin, Phone, ShieldCheck,
+    Sparkles, Trophy, Users2, Zap, Car, CalendarCheck2, HelpCircle
 } from 'lucide-vue-next';
 
 const isMenuOpen = ref(false);
-
-const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value;
-};
-
-const orderWhatsApp = (carName) => {
-    const message = encodeURIComponent(`Halo, saya ingin memesan sewa mobil ${carName}. Bisa bantu cek ketersediaannya?`);
-    window.open(`https://wa.me/6282339333202?text=${message}`, '_blank');
+const activeFaq = ref(null);
+const toggleMenu = () => { isMenuOpen.value = !isMenuOpen.value; };
+const toggleFaq = (i) => { activeFaq.value = activeFaq.value === i ? null : i; };
+const orderWhatsApp = (name, type = '') => {
+    const msg = encodeURIComponent(`Halo, saya ingin memesan ${name}${type ? ' paket ' + type : ''}. Mohon info ketersediaannya?`);
+    window.open(`https://wa.me/6282339333202?text=${msg}`, '_blank');
 };
 
 const stats = [
     { value: '50+', label: 'Unit Armada' },
-    { value: '24/7', label: 'Layanan Pelanggan' },
-    { value: '0%', label: 'Biaya Tersembunyi' },
-    { value: '100%', label: 'Kondisi Prima' }
+    { value: '8+', label: 'Tahun Berpengalaman' },
+    { value: '2000+', label: 'Pelanggan Puas' },
+    { value: '24/7', label: 'Siap Melayani' },
 ];
 
 const cars = [
-    {
-        name: 'New Avanza',
-        image: '/image/New-Avanza-Silver-Metallic-2019.jpg',
-        seats: 7,
-        trans: 'AT/MT',
-        year: 2022,
-        priceSopir: 'Rp. 600.000',
-        priceLepas: 'Rp. 350.000 /24 jam',
-        tag: 'Populer'
-    },
-    {
-        name: 'New Innova Reborn',
-        image: '/image/inova reboon.webp',
-        seats: 7,
-        trans: 'Matic',
-        year: 2023,
-        priceSopir: 'Rp. 950.000 /12 jam',
-        priceLepas: 'Rp. 750.000 /24 jam',
-    },
-    {
-        name: 'Hiace Commuter',
-        image: '/image/Hiace Commuter.jpg',
-        seats: 15,
-        trans: 'Manual',
-        year: 2021,
-        priceSopir: 'Rp. 1.100.000 /12 jam',
-        priceLepas: null,
-        tag: 'Grup Besar'
-    },
-    {
-        name: 'Pajero Sport',
-        image: '/image/Pajero.jpg',
-        seats: 7,
-        trans: 'Matic',
-        year: 2023,
-        priceSopir: 'Rp. 2.000.000',
-        priceLepas: 'Rp. 1.700.000 /24 jam',
-    },
-    {
-        name: 'New Innova Zenix',
-        image: '/image/New-Zenix.webp',
-        seats: 7,
-        trans: 'Hybrid/AT',
-        year: 2024,
-        priceSopir: 'Rp. 1.200.000',
-        priceLepas: 'Rp. 900.000 /24 jam',
-    },
-    {
-        name: 'New Veloz',
-        image: '/image/New-Veloz.webp',
-        seats: 7,
-        trans: 'AT/MT',
-        year: 2024,
-        priceSopir: 'Rp. 650.000',
-        priceLepas: 'Rp. 400.000 /24 jam',
-    },
-    {
-        name: 'Toyota Fortuner VRZ',
-        image: '/image/Fortuner.jpg',
-        seats: 7,
-        trans: 'Matic',
-        year: 2023,
-        priceSopir: 'Rp. 1.800.000',
-        priceLepas: 'Rp. 1.500.000 /24 jam',
-    },
-    {
-        name: 'Hiace Premio',
-        image: '/image/Hiace Premi.jpeg',
-        seats: 12,
-        trans: 'AT',
-        year: 2022,
-        priceSopir: 'Rp. 1.400.000 /12 jam',
-        priceLepas: null,
-        tag: 'Kemewahan Grup'
-    },
-    {
-        name: 'Toyota Alphard',
-        image: '/image/Alphard.webp',
-        seats: 7,
-        trans: 'Matic',
-        year: 2022,
-        priceSopir: 'Rp. 3.500.000 /12 jam',
-        priceLepas: null,
-        tag: 'Premium'
-    }
+    { name: 'New Avanza', image: '/image/New-Avanza-Silver-Metallic-2019.jpg', seats: 7, trans: 'AT/MT', year: 2022, priceSopir: 'Rp. 600.000', priceLepas: 'Rp. 350.000 /24 jam', tag: 'Populer' },
+    { name: 'New Innova Reborn', image: '/image/inova reboon.webp', seats: 7, trans: 'Matic', year: 2023, priceSopir: 'Rp. 950.000 /12 jam', priceLepas: 'Rp. 750.000 /24 jam' },
+    { name: 'Hiace Commuter', image: '/image/Hiace Commuter.jpg', seats: 15, trans: 'Manual', year: 2021, priceSopir: 'Rp. 1.100.000 /12 jam', priceLepas: null, tag: 'Grup Besar' },
+    { name: 'Pajero Sport', image: '/image/Pajero.jpg', seats: 7, trans: 'Matic', year: 2023, priceSopir: 'Rp. 2.000.000', priceLepas: 'Rp. 1.700.000 /24 jam' },
+    { name: 'New Innova Zenix', image: '/image/New-Zenix.webp', seats: 7, trans: 'Hybrid/AT', year: 2024, priceSopir: 'Rp. 1.200.000', priceLepas: 'Rp. 900.000 /24 jam' },
+    { name: 'New Veloz', image: '/image/New-Veloz.webp', seats: 7, trans: 'AT/MT', year: 2024, priceSopir: 'Rp. 650.000', priceLepas: 'Rp. 400.000 /24 jam' },
+    { name: 'Toyota Fortuner VRZ', image: '/image/Fortuner.jpg', seats: 7, trans: 'Matic', year: 2023, priceSopir: 'Rp. 1.800.000', priceLepas: 'Rp. 1.500.000 /24 jam' },
+    { name: 'Hiace Premio', image: '/image/Hiace Premi.jpeg', seats: 12, trans: 'AT', year: 2022, priceSopir: 'Rp. 1.400.000 /12 jam', priceLepas: null, tag: 'Kemewahan Grup' },
+    { name: 'Toyota Alphard', image: '/image/Alphard.webp', seats: 7, trans: 'Matic', year: 2022, priceSopir: 'Rp. 3.500.000 /12 jam', priceLepas: null, tag: 'Premium' },
+];
+
+const benefits = [
+    { title: 'Armada Terawat', desc: 'Semua unit kami keluaran terbaru dengan perawatan rutin di bengkel resmi.', icon: Trophy, color: 'from-blue-500 to-blue-600' },
+    { title: 'Sopir Berpengalaman', desc: 'Driver ramah, profesional, dan hafal rute wisata Banyuwangi.', icon: Users2, color: 'from-emerald-500 to-emerald-600' },
+    { title: 'Harga Transparan', desc: 'Harga yang kami kutip adalah harga final. Tanpa biaya tersembunyi.', icon: Sparkles, color: 'from-amber-500 to-orange-500' },
+    { title: 'Respon 24/7', desc: 'Admin siap membantu Anda kapan saja melalui WhatsApp.', icon: Zap, color: 'from-purple-500 to-purple-600' },
+];
+
+const steps = [
+    { num: '01', title: 'Pilih Armada', desc: 'Tentukan unit yang sesuai kebutuhan dan budget Anda.', icon: Car },
+    { num: '02', title: 'Konfirmasi via Chat', desc: 'Konsultasikan jadwal dan detail perjalanan via WhatsApp.', icon: CalendarCheck2 },
+    { num: '03', title: 'Siap Berangkat!', desc: 'Unit diantarkan ke lokasi Anda. Selamat menikmati perjalanan.', icon: Check },
+];
+
+const faqs = [
+    { q: 'Apakah bisa sewa mobil lepas kunci?', a: 'Ya, kami melayani lepas kunci dengan syarat E-KTP, KK, dan SIM A aktif, serta jaminan.' },
+    { q: 'Bagaimana jika terjadi kendala selama perjalanan?', a: 'Kami menyediakan bantuan darurat 24 jam. Tim kami akan segera merespons dan mengirim unit pengganti bila diperlukan.' },
+    { q: 'Apakah harga sudah include BBM dan sopir?', a: 'Ada dua paket: Dengan Sopir + BBM (all-in) dan Lepas Kunci (unit saja). Detail harga tertera di setiap kartu armada.' },
+    { q: 'Bisa antar jemput bandara atau stasiun?', a: 'Tentu! Kami melayani antar-jemput di Bandara Blimbingsari, Stasiun Banyuwangi Kota, maupun hotel Anda.' },
+    { q: 'Berapa biaya overtime jika terlambat mengembalikan?', a: 'Toleransi 30 menit, setelah itu dikenakan biaya tambahan 10% dari harga sewa per jam.' },
 ];
 
 const testimonials = [
-    {
-        name: 'Susi Kiki',
-        role: 'Verified Customer',
-        avatar: 'https://ui-avatars.com/api/?name=Susi+Kiki&background=random',
-        content: '"Puas dgn pelayanannya, driver dan fotografernya sll memberikan rekomended tempat makan yg baik, sedikit saran utk dokumentasi kl bisa menggunakan kamera DSLR agar hasilnya lbh bagus lg. Kami sangat puas menggunakan PT. Banyuwangi Trans Wisata"',
-        info: 'Sewa Dengan Sopir • 6 Bulan Lalu'
-    },
-    {
-        name: 'CV Unggas Jaya',
-        role: 'Bussiness Partner',
-        avatar: 'CJ', // Initials
-        content: '"Rental innova reborn lepas kunci... Mobil di anter kebandara Blimbingsari.. Mobil baru, bersih, wangi rental mobil lepas kunci yg gak ribet..yg nganterin mobil juga sangat ramah..trans wisata banyuwangi terimakasih."',
-        info: 'Lepas Kunci • 2 Bulan Lalu'
-    },
-    {
-        name: 'Rida Setiani',
-        role: 'Local Guide',
-        avatar: 'https://ui-avatars.com/api/?name=Rida+Setiani&background=random',
-        content: '"Happy Banget Pelayanan sangat memuaskan. kondisi Mobil prima. Driver hafal jalan.. nyambung diajak ngobrol dan Sopan. Terimakasih banyuwangi trans wisata 🥰"',
-        info: 'Wisata Keluarga • 1 Tahun Lalu'
-    }
+    { name: 'Susi Kiki', role: 'Wisatawan', avatar: 'https://ui-avatars.com/api/?name=Susi+Kiki&background=3b82f6&color=fff&bold=true', text: 'Puas banget! Driver sangat ramah dan hafal tempat wisata. Mobil bersih dan nyaman. Highly recommended!', label: 'Dengan Sopir · 6 Bulan Lalu', rating: 5 },
+    { name: 'CV Unggas Jaya', role: 'Mitra Bisnis', avatar: 'https://ui-avatars.com/api/?name=Unggas+Jaya&background=10b981&color=fff&bold=true', text: 'Lepas kunci Innova Reborn, antar ke bandara Blimbingsari. Mobil baru, wangi, dan yang antar sangat ramah. Gak ribet sama sekali!', label: 'Lepas Kunci · 2 Bulan Lalu', rating: 5 },
+    { name: 'Rida Setiani', role: 'Wisatawan Keluarga', avatar: 'https://ui-avatars.com/api/?name=Rida+Setiani&background=8b5cf6&color=fff&bold=true', text: 'Pelayanan sangat memuaskan, mobil prima, driver hafal jalan dan enak diajak ngobrol. Terima kasih Banyuwangi Trans Wisata!', label: 'Wisata Keluarga · 1 Tahun Lalu', rating: 5 },
 ];
 </script>
 
 <template>
     <Head>
-        <title>Rental Mobil Banyuwangi - Sewa Mobil Murah & Terpercaya</title>
-        <meta name="description" content="Sewa Mobil Murah & Terpercaya di Banyuwangi. Armada terbaru (Avanza, Innova, Hiace) dengan layanan Lepas Kunci atau Dengan Sopir. Hubungi kami sekarang!">
+        <title>Rental Mobil Banyuwangi - Sewa Murah Terpercaya | Lepas Kunci & Sopir</title>
+        <meta name="description" content="Sewa mobil Banyuwangi murah & terpercaya. Armada Avanza, Innova, Hiace, Fortuner, Alphard. Layanan Lepas Kunci & Dengan Sopir. Respon cepat, harga transparan.">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     </Head>
 
-    <div class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 scroll-smooth">
-        <!-- Navigation -->
-        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 transition-all duration-300">
+    <div class="bg-white text-slate-800 scroll-smooth" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+
+        <!-- ========= NAVBAR ========= -->
+        <nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-xl shadow-sm border-b border-slate-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
-                    <div class="flex-shrink-0 flex items-center gap-2 group cursor-pointer">
-                        <div class="bg-blue-600 p-2 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                            <CarFront class="text-white w-6 h-6" />
+                    <!-- Logo -->
+                    <a href="/" class="flex items-center gap-2.5 group">
+                        <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-105 transition-transform">
+                            <CarFront class="w-5 h-5 text-white" />
                         </div>
-                        <span class="text-xl font-extrabold tracking-tight text-slate-900">Rental<span class="text-blue-600">Banyuwangi</span></span>
+                        <span class="text-lg font-black text-slate-900">Rental<span class="text-blue-600">Banyuwangi</span></span>
+                    </a>
+
+                    <!-- Desktop Nav -->
+                    <div class="hidden md:flex items-center gap-8">
+                        <a href="#home" class="text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Beranda</a>
+                        <a href="#armada" class="text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Armada</a>
+                        <a href="#syarat" class="text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Syarat Sewa</a>
+                        <a href="#reviews" class="text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Ulasan</a>
                     </div>
-                    
-                    <div class="hidden md:flex space-x-10">
-                        <a href="#home" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Home</a>
-                        <a href="#armada" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Armada</a>
-                        <a href="#syarat" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Syarat & Ketentuan</a>
-                        <a href="#reviews" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Ulasan</a>
-                    </div>
-                    
-                    <div class="flex items-center gap-4">
-                        <a href="#armada" class="hidden sm:inline-block bg-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-black transition-all shadow-xl shadow-blue-200 active:scale-95">
-                            Sewa Sekarang
+
+                    <div class="flex items-center gap-3">
+                        <a href="https://wa.me/6282339333202" target="_blank" class="hidden sm:flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all active:scale-95 shadow-lg shadow-emerald-200">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.877 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.821 7.63h-.006c-2.712 0-5.38-.73-7.712-2.11L3 20.502l.639-2.341c-1.513-2.52-2.311-5.385-2.311-8.324 0-8.813 7.169-15.98 15.985-15.98 4.27 0 8.283 1.663 11.302 4.685 3.018 3.02 4.68 7.034 4.68 11.298 0 8.816-7.172 15.985-15.987 15.985"/></svg>
+                            WhatsApp
                         </a>
-                        <button @click="toggleMenu" class="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-all">
-                            <Menu v-if="!isMenuOpen" class="w-6 h-6 animate-in fade-in zoom-in" />
-                            <X v-else class="w-6 h-6 animate-in fade-in zoom-in" />
+                        <button @click="toggleMenu" class="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+                            <Menu v-if="!isMenuOpen" class="w-5 h-5" />
+                            <X v-else class="w-5 h-5" />
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Mobile Menu -->
-            <div v-show="isMenuOpen" class="md:hidden bg-white border-t border-slate-100 overflow-hidden transition-all duration-300 transform" 
-                 :class="{'translate-y-0 opacity-100': isMenuOpen, '-translate-y-4 opacity-0': !isMenuOpen}">
-                <div class="px-6 py-8 space-y-6">
-                    <a href="#home" @click="isMenuOpen = false" class="block text-lg font-bold text-slate-900 border-b border-slate-50 pb-2">Home</a>
-                    <a href="#armada" @click="isMenuOpen = false" class="block text-lg font-bold text-slate-900 border-b border-slate-50 pb-2">Armada</a>
-                    <a href="#syarat" @click="isMenuOpen = false" class="block text-lg font-bold text-slate-900 border-b border-slate-50 pb-2">Syarat & Ketentuan</a>
-                    <a href="#reviews" @click="isMenuOpen = false" class="block text-lg font-bold text-slate-900 border-b border-slate-50 pb-2">Ulasan</a>
-                    <div class="pt-4">
-                        <a href="https://wa.me/6282339333202" class="flex items-center justify-center gap-3 bg-emerald-500 text-white py-4 rounded-2xl font-black shadow-xl shadow-emerald-100 active:scale-95 transition-transform">
-                            <MessageCircle class="w-6 h-6" />
-                            Chat WhatsApp
-                        </a>
-                    </div>
+            <div v-show="isMenuOpen" class="md:hidden border-t border-slate-100 bg-white px-4 py-5 space-y-1">
+                <a href="#home" @click="isMenuOpen=false" class="block px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">Beranda</a>
+                <a href="#armada" @click="isMenuOpen=false" class="block px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">Armada</a>
+                <a href="#syarat" @click="isMenuOpen=false" class="block px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">Syarat Sewa</a>
+                <a href="#reviews" @click="isMenuOpen=false" class="block px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors">Ulasan</a>
+                <div class="pt-3">
+                    <a href="https://wa.me/6282339333202" class="flex items-center justify-center gap-2 bg-emerald-500 text-white py-3.5 rounded-2xl font-bold text-sm">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.877 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.821 7.63h-.006c-2.712 0-5.38-.73-7.712-2.11L3 20.502l.639-2.341c-1.513-2.52-2.311-5.385-2.311-8.324 0-8.813 7.169-15.98 15.985-15.98 4.27 0 8.283 1.663 11.302 4.685 3.018 3.02 4.68 7.034 4.68 11.298 0 8.816-7.172 15.985-15.987 15.985"/></svg>
+                        Chat WhatsApp
+                    </a>
                 </div>
             </div>
         </nav>
 
-        <!-- Hero Section -->
-        <section id="home" class="relative pt-28 pb-12 md:pt-40 md:pb-20 overflow-hidden">
-            <div class="absolute top-0 right-0 -z-10 opacity-30 transform translate-x-1/2 -translate-y-1/4">
-                <div class="w-[600px] h-[600px] bg-blue-400 rounded-full blur-[150px]"></div>
+        <!-- ========= HERO ========= -->
+        <section id="home" class="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-gradient-to-b from-slate-50 to-white">
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100 rounded-full blur-[120px] opacity-60 -translate-y-1/2 translate-x-1/4"></div>
+                <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-100 rounded-full blur-[100px] opacity-50 translate-y-1/3 -translate-x-1/4"></div>
             </div>
-            
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <div class="text-center max-w-4xl mx-auto">
-                    <div class="inline-flex items-center gap-2 bg-white border border-slate-200 shadow-sm rounded-full px-5 py-2 mb-8 animate-bounce hover:scale-105 transition-transform cursor-default">
-                        <div class="flex text-yellow-500">
-                            <Star v-for="i in 5" :key="i" class="w-4 h-4 fill-current" />
-                        </div>
-                        <span class="text-xs font-black text-slate-700">4.7/5 (48 Ulasan Google)</span>
-                    </div>
-                    
-                    <h1 class="text-5xl md:text-7xl font-black text-slate-900 leading-[1.1] mb-8 tracking-tighter">
-                        Sewa Mobil <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">Banyuwangi Murah</span> - Lepas Kunci & Sopir
-                    </h1>
-                    
-                    <p class="text-lg md:text-xl text-slate-500 mb-10 leading-relaxed max-w-3xl mx-auto font-medium">
-                        Sewa mobil Banyuwangi terbaik dengan armada terbaru: <span class="text-blue-600 font-bold">Avanza, Innova Reborn, Zenix, Hiace & Fortuner.</span> Melayani sewa mobil lepas kunci atau dengan sopir berpengalaman. <span class="text-slate-900 font-bold underline decoration-blue-500 decoration-4">Respon Cepat & Harga Transparan.</span>
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <a href="#armada" class="group w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-black transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2 active:scale-95">
-                            Pilih Armada
-                            <ChevronRight class="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                        </a>
-                        <a href="https://wa.me/6282339333202" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-emerald-500 text-white rounded-2xl font-black text-lg hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-200 flex items-center justify-center gap-2 active:scale-95">
-                            <MessageCircle class="w-6 h-6" />
-                            Chat WhatsApp
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Stats Section -->
-        <section class="py-12 bg-white border-y border-slate-100">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div v-for="stat in stats" :key="stat.label" class="text-center group cursor-default">
-                        <p class="text-3xl md:text-4xl font-black text-blue-600 mb-1 group-hover:scale-110 transition-transform duration-300">{{ stat.value }}</p>
-                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">{{ stat.label }}</p>
+            <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 bg-white border border-slate-200 shadow-sm rounded-full px-4 py-1.5 mb-8">
+                    <div class="flex text-yellow-400">
+                        <Star v-for="i in 5" :key="i" class="w-3.5 h-3.5 fill-current" />
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Catalog Section -->
-        <section id="armada" class="py-24 bg-slate-50">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-16">
-                    <span class="text-blue-600 font-black text-xs uppercase tracking-[0.3em] mb-4 inline-block">Koleksi Armada Terbaru</span>
-                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Pilihan Sewa Mobil Terbaik di Banyuwangi</h2>
-                    <p class="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Temukan mobil yang sesuai kebutuhan Anda. Semua unit dalam kondisi prima dan terawat secara berkala.</p>
+                    <span class="text-xs font-bold text-slate-600">Rating 4.8/5 · 2000+ Pelanggan Puas</span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <div v-for="car in cars" :key="car.name" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 group flex flex-col">
-                        
-                        <!-- Car Image -->
-                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                            <img :src="car.image" :alt="car.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            <div v-if="car.tag" class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
-                                {{ car.tag }}
-                            </div>
-                        </div>
+                <!-- Headline -->
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-[1.1] mb-6 tracking-tight">
+                    Sewa Mobil <br class="hidden sm:block">
+                    <span class="text-blue-600">Banyuwangi</span> Murah<br>
+                    <span class="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-500">Lepas Kunci & Dengan Sopir</span>
+                </h1>
 
-                        <!-- Content -->
-                        <div class="p-5 flex flex-col grow">
-                            <!-- Name -->
-                            <h3 class="text-base font-black text-slate-900 mb-4">{{ car.name }}</h3>
+                <p class="text-base md:text-lg text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    Armada terbaru <strong class="text-slate-700">Avanza, Innova, Hiace, Fortuner, Alphard</strong> siap mengantar perjalanan Anda. 
+                    Harga transparan, respon cepat, sopir berpengalaman.
+                </p>
 
-                            <!-- Pricing -->
-                            <div class="space-y-2 mb-4">
-                                <!-- Dengan Sopir -->
-                                <div class="pb-2 border-b border-slate-100">
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Dengan Sopir + BBM</p>
-                                    <p class="text-sm font-black text-blue-600">{{ car.priceSopir }}</p>
-                                </div>
-                                <!-- Lepas Kunci -->
-                                <div>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Lepas Kunci</p>
-                                    <p class="text-sm font-bold" :class="car.priceLepas ? 'text-blue-600' : 'text-slate-300'">
-                                        {{ car.priceLepas || '-' }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Specs Footer -->
-                            <div class="mt-auto pt-3 border-t border-slate-100 flex items-center gap-3 text-slate-500 text-[10px] font-bold">
-                                <div class="flex items-center gap-1">
-                                    <Settings2 class="w-3 h-3" />
-                                    <span>{{ car.year }}</span>
-                                </div>
-                                <div class="w-px h-3 bg-slate-200"></div>
-                                <div class="flex items-center gap-1">
-                                    <Users class="w-3 h-3" />
-                                    <span>{{ car.seats }} seat</span>
-                                </div>
-                                <div class="w-px h-3 bg-slate-200"></div>
-                                <div class="flex items-center gap-1">
-                                    <Key class="w-3 h-3" />
-                                    <span>{{ car.trans }}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- CTA -->
-                        <button @click="orderWhatsApp(car.name)" class="mx-5 mb-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm tracking-wide transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
-                            Pesan Sekarang
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Terms Section -->
-        <section id="syarat" class="py-24 bg-white">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Syarat Sewa Mobil Mudah</h2>
-                    <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full mb-6"></div>
-                    <p class="text-slate-500 text-lg font-medium">Proses sewa mobil di Banyuwangi kini lebih praktis tanpa ribet.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <!-- Lepas Kunci -->
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
-                        <div class="relative bg-white border border-slate-100 rounded-3xl p-8 h-full shadow-sm hover:shadow-xl transition-all">
-                            <div class="flex items-center gap-4 mb-8">
-                                <div class="bg-blue-600 text-white p-3 rounded-2xl shadow-xl shadow-blue-100">
-                                    <Key class="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h3 class="text-2xl font-black text-slate-900">Lepas Kunci</h3>
-                                    <p class="text-xs font-black text-blue-600 uppercase tracking-widest">Sewa Mobil Lepas Kunci Banyuwangi</p>
-                                </div>
-                            </div>
-                            <ul class="space-y-4">
-                                <li v-for="item in ['E-KTP & Kartu Keluarga (KK) Asli', 'SIM A Aktif & Wajib ditunjukkan', 'Jaminan Motor + STNK / Deposit', 'Survei khusus pelanggan baru']" :key="item" class="flex items-start gap-4">
-                                    <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
-                                        <Check class="w-3 h-3 text-blue-600 font-bold" />
-                                    </div>
-                                    <span class="text-slate-600 font-bold text-base leading-tight">{{ item }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Dengan Sopir -->
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
-                        <div class="relative bg-white border border-slate-100 rounded-3xl p-8 h-full shadow-sm hover:shadow-xl transition-all">
-                            <div class="flex items-center gap-4 mb-8">
-                                <div class="bg-emerald-600 text-white p-3 rounded-2xl shadow-xl shadow-emerald-100">
-                                    <UserCheck class="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h3 class="text-2xl font-black text-slate-900">Dengan Sopir</h3>
-                                    <p class="text-xs font-black text-emerald-600 uppercase tracking-widest">Sewa Mobil Dengan Sopir Banyuwangi</p>
-                                </div>
-                            </div>
-                            <ul class="space-y-4">
-                                <li v-for="item in ['Durasi sewa standar 12 jam/hari', 'Eksclude BBM, Parkir, Tol & Makan', 'Sopir Ramah, Pro & Hafal Rute']" :key="item" class="flex items-start gap-4">
-                                    <div class="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5">
-                                        <Check class="w-3 h-3 text-emerald-600 font-bold" />
-                                    </div>
-                                    <span class="text-slate-600 font-bold text-base leading-tight">{{ item }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Overtime Banner -->
-                <div class="bg-slate-900 rounded-3xl p-10 md:p-16 overflow-hidden relative group">
-                    <div class="absolute top-0 right-0 w-80 h-80 bg-blue-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
-                    <div class="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
-                        <div class="text-center md:text-left flex-1">
-                            <div class="inline-flex items-center gap-2 bg-orange-500/20 text-orange-500 px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6">
-                                <AlertCircle class="w-5 h-5" />
-                                Kebijakan Overtime
-                            </div>
-                            <h3 class="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">Terlambat mengembalikan unit?</h3>
-                            <p class="text-slate-400 text-lg font-medium">Berapa biaya telat sewa mobil? Kami memberikan toleransi transparan bagi pelanggan kami.</p>
-                        </div>
-                        <div class="bg-white/5 border border-white/10 backdrop-blur-2xl px-12 py-10 rounded-2xl text-center min-w-[280px] group-hover:scale-105 transition-transform">
-                            <p class="text-slate-400 text-sm font-black uppercase tracking-widest mb-2">Biaya Tambahan</p>
-                            <p class="text-6xl font-black text-white">10%</p>
-                            <p class="text-blue-400 font-black text-xl mt-2 tracking-widest">PER JAM</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials -->
-        <section id="reviews" class="py-24 bg-white relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-16">
-                    <span class="inline-block px-5 py-2 mb-6 text-xs font-black tracking-widest text-blue-600 uppercase bg-blue-50 rounded-full">
-                        Testimoni Sewa Mobil Banyuwangi
-                    </span>
-                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-8 tracking-tight">Kisah Puas Dari Pelanggan Kami</h2>
-                    <div class="flex items-center justify-center gap-2 mb-4">
-                        <div class="flex text-yellow-400">
-                            <Star v-for="i in 5" :key="i" class="w-6 h-6 fill-current" />
-                        </div>
-                    </div>
-                    <p class="text-slate-500 font-black text-xl">Rating 4.7/5 • 48 Ulasan Google Terverifikasi</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div v-for="testi in testimonials" :key="testi.name" class="relative group h-full">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur opacity-0 group-hover:opacity-10 transition duration-500"></div>
-                        <div class="relative bg-slate-50 rounded-3xl p-8 border border-slate-100 flex flex-col h-full shadow-sm hover:shadow-xl transition-all duration-500">
-                            <div class="mb-6 flex items-start justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-14 h-14 rounded-xl overflow-hidden shadow-lg border-2 border-white ring-4 ring-blue-50/50">
-                                        <img v-if="testi.avatar.startsWith('http')" :src="testi.avatar" :alt="testi.name" class="w-full h-full object-cover">
-                                        <div v-else class="w-full h-full bg-blue-600 flex items-center justify-center text-white font-black text-xl">{{ testi.avatar }}</div>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-black text-slate-900 text-base mb-0.5">{{ testi.name }}</h4>
-                                        <p class="text-[10px] text-blue-600 font-black uppercase tracking-[0.2em]">{{ testi.role }}</p>
-                                    </div>
-                                </div>
-                                <Quote class="w-10 h-10 text-blue-100/50" />
-                            </div>
-                            <p class="text-slate-600 leading-relaxed font-bold text-base mb-8 grow italic">
-                                {{ testi.content }}
-                            </p>
-                            <div class="pt-6 border-t border-slate-200/50">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ testi.info }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-20 text-center">
-                    <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-3 text-slate-900 font-black uppercase tracking-widest text-sm group hover:text-blue-600 transition-colors">
-                        Lihat Ulasan Lainnya Di Google Maps
-                        <ArrowRight class="w-6 h-6 group-hover:translate-x-3 transition-transform" />
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#armada" class="group inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-base transition-all active:scale-95 shadow-xl shadow-blue-200">
+                        Lihat Semua Armada
+                        <ChevronRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                    <a href="https://wa.me/6282339333202" target="_blank" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 px-8 py-4 rounded-2xl font-bold text-base transition-all active:scale-95">
+                        <svg class="w-5 h-5 fill-emerald-500" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.877 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.821 7.63h-.006c-2.712 0-5.38-.73-7.712-2.11L3 20.502l.639-2.341c-1.513-2.52-2.311-5.385-2.311-8.324 0-8.813 7.169-15.98 15.985-15.98 4.27 0 8.283 1.663 11.302 4.685 3.018 3.02 4.68 7.034 4.68 11.298 0 8.816-7.172 15.985-15.987 15.985"/></svg>
+                        Konsultasi Gratis
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA -->
-        <section class="py-24 bg-white overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 relative">
-                <div class="bg-gradient-to-br from-blue-700 via-indigo-900 to-slate-900 rounded-[3rem] p-10 md:p-20 text-center relative overflow-hidden shadow-2xl">
-                    <div class="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
-                        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2"></div>
-                        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500 rounded-full blur-[150px] translate-y-1/2 -translate-x-1/2"></div>
+        <!-- ========= STATS ========= -->
+        <section class="py-14 bg-blue-600">
+            <div class="max-w-5xl mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div v-for="stat in stats" :key="stat.label" class="text-center">
+                        <p class="text-3xl md:text-4xl font-black text-white mb-1">{{ stat.value }}</p>
+                        <p class="text-sm text-blue-100 font-semibold">{{ stat.label }}</p>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <div class="relative z-10 max-w-4xl mx-auto">
-                        <h2 class="text-4xl md:text-7xl font-black text-white mb-8 leading-[1] tracking-tighter">
-                            Siap Menjelajahi <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-indigo-200">Banyuwangi Sekarang?</span>
-                        </h2>
-                        
-                        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
-                            <a href="https://wa.me/6282333202" class="group w-full sm:w-auto px-10 py-5 bg-emerald-500 text-white rounded-2xl font-black text-xl hover:bg-white hover:text-emerald-600 transition-all shadow-2xl shadow-emerald-500/30 flex items-center justify-center gap-3 active:scale-95">
-                                <MessageCircle class="w-7 h-7" />
-                                Pesan Via WhatsApp
-                            </a>
-                            <a href="#armada" class="w-full sm:w-auto px-10 py-5 bg-white/10 text-white border-2 border-white/20 rounded-2xl font-black text-xl hover:bg-white hover:text-slate-900 transition-all backdrop-blur-xl">
-                                Katalog Armada
-                            </a>
+        <!-- ========= ARMADA CATALOG ========= -->
+        <section id="armada" class="py-20 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-14">
+                    <span class="inline-block bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Koleksi Armada</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">Pilihan Sewa Mobil Banyuwangi</h2>
+                    <p class="text-slate-500 max-w-xl mx-auto">Semua unit kondisi prima, pajak hidup, dan terawat berkala di bengkel resmi.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    <div v-for="car in cars" :key="car.name" class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                        <!-- Image -->
+                        <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                            <img :src="car.image" :alt="car.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div v-if="car.tag" class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                {{ car.tag }}
+                            </div>
                         </div>
 
-                        <div class="flex flex-wrap justify-center gap-10 md:gap-16">
-                            <div v-for="feature in [
-                                { icon: ShieldCheck, text: '100% Aman', color: 'text-emerald-400' },
-                                { icon: Sparkles, text: 'Mobil Bersih', color: 'text-blue-300' },
-                                { icon: Utensils, text: 'Driver Friendly', color: 'text-orange-400' }
-                            ]" :key="feature.text" class="flex items-center gap-4">
-                                <component :is="feature.icon" :class="['w-8 h-8', feature.color]" />
-                                <span class="text-white font-black text-lg tracking-wide">{{ feature.text }}</span>
+                        <!-- Body -->
+                        <div class="p-4 flex flex-col grow">
+                            <h3 class="font-black text-slate-900 text-sm mb-3">{{ car.name }}</h3>
+
+                            <!-- Prices -->
+                            <div class="space-y-2 mb-4 grow">
+                                <div class="bg-blue-50 rounded-xl p-3">
+                                    <p class="text-[10px] text-blue-400 font-bold uppercase tracking-wider mb-0.5">Dengan Sopir + BBM</p>
+                                    <p class="text-sm font-black text-blue-700">{{ car.priceSopir }}</p>
+                                </div>
+                                <div class="bg-slate-50 rounded-xl p-3">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Lepas Kunci</p>
+                                    <p class="text-sm font-bold" :class="car.priceLepas ? 'text-slate-700' : 'text-slate-300'">{{ car.priceLepas || 'Tidak Tersedia' }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Specs -->
+                            <div class="flex items-center gap-3 pt-3 border-t border-slate-100 text-[10px] font-semibold text-slate-400 mb-3">
+                                <span class="flex items-center gap-1"><Settings2 class="w-3 h-3" /> {{ car.year }}</span>
+                                <span class="text-slate-200">|</span>
+                                <span class="flex items-center gap-1"><Users class="w-3 h-3" /> {{ car.seats }} seat</span>
+                                <span class="text-slate-200">|</span>
+                                <span class="flex items-center gap-1"><Key class="w-3 h-3" /> {{ car.trans }}</span>
+                            </div>
+
+                            <!-- CTA -->
+                            <button @click="orderWhatsApp(car.name)" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-black uppercase tracking-widest transition-all active:scale-95">
+                                Pesan Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= WHY CHOOSE US ========= -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="inline-block bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">Mengapa Kami?</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Standar Layanan<br>yang Kami Jaga</h2>
+                        <p class="text-slate-500 mb-10 leading-relaxed">Kami bukan sekadar rental mobil. Kami hadir sebagai mitra perjalanan Anda — memberikan keamanan, kenyamanan, dan kemudahan di setiap kilometer.</p>
+
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div v-for="b in benefits" :key="b.title" class="group p-5 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-md border border-transparent hover:border-slate-100 transition-all cursor-default">
+                                <div :class="`w-11 h-11 rounded-xl bg-gradient-to-br ${b.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`">
+                                    <component :is="b.icon" class="w-5 h-5 text-white" />
+                                </div>
+                                <h4 class="font-black text-slate-900 text-sm mb-1">{{ b.title }}</h4>
+                                <p class="text-slate-500 text-xs leading-relaxed">{{ b.desc }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative hidden lg:block">
+                        <div class="absolute -inset-6 bg-blue-500/5 rounded-[3rem]"></div>
+                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800" alt="Premium Service" class="rounded-3xl w-full object-cover shadow-2xl relative z-10">
+                        <!-- Floating badge -->
+                        <div class="absolute bottom-6 left-6 z-20 bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center gap-3">
+                            <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
+                                <ShieldCheck class="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                                <p class="text-xs font-black text-slate-900">Terpercaya Sejak 2018</p>
+                                <p class="text-[10px] text-slate-400 font-medium">Ribuan perjalanan sukses</p>
                             </div>
                         </div>
                     </div>
@@ -485,157 +267,281 @@ const testimonials = [
             </div>
         </section>
 
-        <!-- Footer / Contact Section -->
-        <footer class="pt-24 pb-12 bg-slate-950 relative overflow-hidden">
-            <!-- Background Decorative Elements -->
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20">
-                <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600 rounded-full blur-[120px]"></div>
-                <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600 rounded-full blur-[120px]"></div>
-            </div>
+        <!-- ========= HOW IT WORKS ========= -->
+        <section class="py-20 bg-slate-900">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <span class="inline-block bg-white/10 text-blue-300 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">Cara Memesan</span>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-16">3 Langkah Mudah Sewa Mobil</h2>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <!-- Top Grid: Branding & Quick Info -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-                    <!-- Brand Column -->
-                    <div class="lg:col-span-4 space-y-8">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-600 p-2.5 rounded-2xl shadow-xl shadow-blue-500/20">
-                                <CarFront class="text-white w-7 h-7" />
+                <div class="grid md:grid-cols-3 gap-8 relative">
+                    <div class="hidden md:block absolute top-10 left-[20%] right-[20%] h-px bg-gradient-to-r from-blue-500/20 via-blue-400/60 to-blue-500/20"></div>
+
+                    <div v-for="(step, idx) in steps" :key="step.title" class="group flex flex-col items-center">
+                        <div class="relative w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:border-blue-600 group-hover:scale-110 transition-all duration-500 z-10">
+                            <component :is="step.icon" class="w-8 h-8 text-blue-400 group-hover:text-white transition-colors" />
+                            <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-600 group-hover:bg-white rounded-full flex items-center justify-center">
+                                <span class="text-[9px] font-black text-white group-hover:text-blue-600">{{ idx + 1 }}</span>
                             </div>
-                            <span class="text-2xl font-black tracking-tight text-white focus:outline-none">Rental<span class="text-blue-500">Banyuwangi</span></span>
                         </div>
-                        <p class="text-slate-400 text-lg leading-relaxed font-medium">
-                            Solusi transportasi terbaik di Banyuwangi. Kami berkomitmen memberikan layanan sewa mobil yang aman, nyaman, dan terjangkau untuk setiap perjalanan Anda.
-                        </p>
-                        <div class="flex gap-4">
-                            <a v-for="i in 4" :key="i" href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300">
-                                <component :is="[Sparkles, Utensils, ShieldCheck, Star][i-1]" class="w-5 h-5" />
-                            </a>
+                        <h4 class="text-white font-black text-lg mb-2">{{ step.title }}</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed max-w-[200px]">{{ step.desc }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= TERMS ========= -->
+        <section id="syarat" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4">
+                <div class="text-center mb-14">
+                    <span class="inline-block bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Persyaratan</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">Syarat & Ketentuan Sewa</h2>
+                    <p class="text-slate-500">Proses mudah dan tidak berbelit. Berikut syarat yang diperlukan.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Lepas Kunci -->
+                    <div class="rounded-2xl border-2 border-blue-100 bg-blue-50/30 p-8">
+                        <div class="flex items-center gap-4 mb-7">
+                            <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                                <Key class="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black text-slate-900">Lepas Kunci</h3>
+                                <p class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Self Drive</p>
+                            </div>
                         </div>
+                        <ul class="space-y-3.5">
+                            <li v-for="item in ['E-KTP & Kartu Keluarga (KK) Asli', 'SIM A Aktif & Wajib Ditunjukkan', 'Jaminan Motor + STNK / Deposit', 'Survei khusus untuk pelanggan baru']" :key="item" class="flex items-center gap-3">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                                    <Check class="w-3 h-3 text-blue-600" />
+                                </div>
+                                <span class="text-sm font-semibold text-slate-700">{{ item }}</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <!-- Contact & Map Column -->
-                    <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <!-- Address Card -->
-                        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors group">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-                                    <MapPin class="w-6 h-6 text-blue-500 group-hover:text-white" />
-                                </div>
-                                <h4 class="text-white font-black text-xl uppercase tracking-tighter">Lokasi Kantor</h4>
+                    <!-- Dengan Sopir -->
+                    <div class="rounded-2xl border-2 border-emerald-100 bg-emerald-50/30 p-8">
+                        <div class="flex items-center gap-4 mb-7">
+                            <div class="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200">
+                                <UserCheck class="w-6 h-6 text-white" />
                             </div>
-                            <p class="text-slate-300 font-medium leading-relaxed mb-6">
-                                Depan Masjid Cheng Ho ke barat dikit, <br>
-                                Jl. Sutawijaya, Sumberrejo, <br>
-                                Kec. Banyuwangi, Jawa Timur 68419
-                            </p>
-                            <a href="https://maps.app.goo.gl/..." target="_blank" class="inline-flex items-center gap-2 text-blue-400 font-black text-sm uppercase tracking-widest hover:text-white transition-colors">
-                                <MapPinned class="w-4 h-4" />
-                                Navigasi Google Maps
-                            </a>
+                            <div>
+                                <h3 class="text-xl font-black text-slate-900">Dengan Sopir</h3>
+                                <p class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Driver + BBM</p>
+                            </div>
                         </div>
+                        <ul class="space-y-3.5">
+                            <li v-for="item in ['Durasi standar 12 jam/hari', 'BBM ditanggung dalam paket harga', 'Sopir ramah, profesional & hafal rute', 'Bisa request driver untuk wisata']" :key="item" class="flex items-center gap-3">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                                    <Check class="w-3 h-3 text-emerald-600" />
+                                </div>
+                                <span class="text-sm font-semibold text-slate-700">{{ item }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-                        <!-- Info Card -->
-                        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors group">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500 transition-colors">
-                                    <Phone class="w-6 h-6 text-emerald-500 group-hover:text-white" />
-                                </div>
-                                <h4 class="text-white font-black text-xl uppercase tracking-tighter">Hubungi Kami</h4>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">WhatsApp</span>
-                                    <span class="text-white font-black text-lg">0823-3933-3202</span>
-                                </div>
-                                <div class="flex items-center justify-between border-t border-white/5 pt-4">
-                                    <span class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Operasional</span>
-                                    <span class="text-emerald-400 font-black text-lg flex items-center gap-2">
-                                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                                        24 JAM
-                                    </span>
-                                </div>
+                <!-- Overtime Notice -->
+                <div class="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6">
+                    <div class="flex items-center gap-3 text-amber-600">
+                        <AlertCircle class="w-6 h-6 shrink-0" />
+                        <div>
+                            <p class="font-black text-slate-900 text-sm">Kebijakan Keterlambatan</p>
+                            <p class="text-slate-500 text-xs mt-0.5">Toleransi 30 menit. Lebih dari itu dikenakan biaya overtime.</p>
+                        </div>
+                    </div>
+                    <div class="md:ml-auto text-center md:text-right">
+                        <p class="text-3xl font-black text-amber-600">+10%</p>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">per jam keterlambatan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= FAQ ========= -->
+        <section class="py-20 bg-slate-50">
+            <div class="max-w-3xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <span class="inline-block bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">FAQ</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">Pertanyaan Umum</h2>
+                    <p class="text-slate-500">Hal-hal yang sering ditanyakan pelanggan kami.</p>
+                </div>
+
+                <div class="space-y-3">
+                    <div v-for="(faq, i) in faqs" :key="i" class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                        <button @click="toggleFaq(i)" class="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none">
+                            <span class="font-bold text-slate-800 text-sm pr-4">{{ faq.q }}</span>
+                            <ChevronRight :class="['w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300', activeFaq === i ? 'rotate-90 text-blue-500' : '']" />
+                        </button>
+                        <div v-show="activeFaq === i" class="px-6 pb-5">
+                            <div class="h-px bg-slate-100 mb-4"></div>
+                            <p class="text-slate-500 text-sm leading-relaxed">{{ faq.a }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-blue-600 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-5">
+                    <div>
+                        <p class="font-black text-white text-lg">Masih ada pertanyaan?</p>
+                        <p class="text-blue-100 text-sm">Admin kami online 24 jam untuk membantu Anda.</p>
+                    </div>
+                    <a href="https://wa.me/6282339333202" target="_blank" class="whitespace-nowrap px-7 py-3 bg-white text-blue-600 rounded-xl font-black text-sm hover:bg-blue-50 transition-all active:scale-95">
+                        Tanya Sekarang
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= TESTIMONIALS ========= -->
+        <section id="reviews" class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <span class="inline-block bg-yellow-50 text-yellow-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Ulasan Pelanggan</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-2">Kata Mereka Tentang Kami</h2>
+                    <div class="flex items-center justify-center gap-1.5 mt-4">
+                        <div class="flex text-yellow-400">
+                            <Star v-for="i in 5" :key="i" class="w-5 h-5 fill-current" />
+                        </div>
+                        <span class="text-slate-500 font-semibold text-sm ml-2">4.8/5 dari 50+ ulasan Google</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div v-for="t in testimonials" :key="t.name" class="bg-slate-50 rounded-2xl p-7 border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                        <!-- Stars -->
+                        <div class="flex text-yellow-400 mb-5">
+                            <Star v-for="i in t.rating" :key="i" class="w-4 h-4 fill-current" />
+                        </div>
+                        <!-- Content -->
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 grow italic">"{{ t.text }}"</p>
+                        <!-- Author -->
+                        <div class="flex items-center gap-3 pt-5 border-t border-slate-200">
+                            <img :src="t.avatar" :alt="t.name" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="font-black text-slate-900 text-sm">{{ t.name }}</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">{{ t.label }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bottom Layout: Map & Links -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 border-t border-white/5 pt-20">
-                    <!-- Map Container -->
-                    <div class="lg:col-span-7 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-3xl h-[400px] group relative">
-                        <div class="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.63480694391!2d114.3488593!3d-8.2394277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd145f99fd54fdd%3A0xd68c459bfa1d891!2sTripBanyuwangi!5e0!3m2!1sid!2sid!4v1773287137760!5m2!1sid!2sid" 
-                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                            class="grayscale hover:grayscale-0 transition-all duration-700">
-                        </iframe>
+                <div class="mt-10 text-center">
+                    <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors group">
+                        Lihat Semua Ulasan di Google Maps
+                        <ArrowRight class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= FINAL CTA ========= -->
+        <section class="py-20 bg-slate-50">
+            <div class="max-w-3xl mx-auto px-4 text-center">
+                <div class="bg-slate-900 rounded-3xl p-12 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+                    <div class="absolute bottom-0 left-0 w-60 h-60 bg-emerald-500/10 rounded-full blur-[80px]"></div>
+
+                    <div class="relative z-10">
+                        <h2 class="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
+                            Siap Jelajahi<br><span class="text-blue-400">Banyuwangi?</span>
+                        </h2>
+                        <p class="text-slate-400 mb-10 font-medium">Hubungi kami sekarang dan dapatkan penawaran terbaik untuk perjalanan Anda.</p>
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="https://wa.me/6282339333202" target="_blank" class="inline-flex items-center justify-center gap-2.5 bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-4 rounded-2xl font-black text-base transition-all active:scale-95 shadow-xl shadow-emerald-900/20">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.877 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.821 7.63h-.006c-2.712 0-5.38-.73-7.712-2.11L3 20.502l.639-2.341c-1.513-2.52-2.311-5.385-2.311-8.324 0-8.813 7.169-15.98 15.985-15.98 4.27 0 8.283 1.663 11.302 4.685 3.018 3.02 4.68 7.034 4.68 11.298 0 8.816-7.172 15.985-15.987 15.985"/></svg>
+                                Chat WhatsApp
+                            </a>
+                            <a href="#armada" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-4 rounded-2xl font-bold text-base transition-all">
+                                Katalog Armada
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========= FOOTER ========= -->
+        <footer class="bg-slate-950 py-16">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="grid md:grid-cols-4 gap-10 mb-12">
+                    <!-- Brand -->
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-2.5 mb-5">
+                            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
+                                <CarFront class="w-5 h-5 text-white" />
+                            </div>
+                            <span class="text-lg font-black text-white">Rental<span class="text-blue-400">Banyuwangi</span></span>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
+                            PT. Banyuwangi Trans Wisata — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani sewa mobil dengan sopir dan lepas kunci di seluruh Banyuwangi.
+                        </p>
+                        <div class="flex items-center gap-3 text-slate-400 text-sm">
+                            <Phone class="w-4 h-4 text-blue-400" />
+                            <span>0823-3933-3202</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-1 animate-pulse"></span>
+                            <span class="text-emerald-400 text-xs font-bold">Online 24/7</span>
+                        </div>
                     </div>
 
                     <!-- Quick Links -->
-                    <div class="lg:col-span-5 flex flex-col justify-between py-4">
-                        <div class="grid grid-cols-2 gap-16">
-                            <div class="space-y-6">
-                                <h5 class="text-white font-black uppercase text-xs tracking-[0.3em]">Halaman</h5>
-                                <ul class="space-y-4">
-                                    <li v-for="link in ['Home', 'Armada', 'Syarat', 'Ulasan']" :key="link">
-                                        <a href="#" class="text-slate-400 hover:text-blue-500 transition-colors font-bold">{{ link }}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="space-y-6">
-                                <h5 class="text-white font-black uppercase text-xs tracking-[0.3em]">Layanan</h5>
-                                <ul class="space-y-4">
-                                    <li v-for="link in ['Lepas Kunci', 'Dengan Sopir', 'Drop Off', 'Paket Wisata']" :key="link">
-                                        <a href="#" class="text-slate-400 hover:text-blue-500 transition-colors font-bold">{{ link }}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div>
+                        <h5 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Navigasi</h5>
+                        <ul class="space-y-3">
+                            <li v-for="link in [{label:'Beranda', href:'#home'},{label:'Armada',href:'#armada'},{label:'Syarat Sewa',href:'#syarat'},{label:'Ulasan',href:'#reviews'}]" :key="link.label">
+                                <a :href="link.href" class="text-slate-400 hover:text-white text-sm font-medium transition-colors">{{ link.label }}</a>
+                            </li>
+                        </ul>
+                    </div>
 
-                        <!-- Brand Statement -->
-                        <div class="mt-20 p-8 rounded-3xl bg-blue-600/10 border border-blue-500/20 active:scale-95 transition-transform cursor-default">
-                            <p class="text-blue-300 font-bold text-sm italic">
-                                "Perjalanan Anda adalah prioritas kami. Nikmati setiap momen di Banyuwangi dengan kenyamanan armada terbaik kami."
-                            </p>
-                        </div>
+                    <!-- Services -->
+                    <div>
+                        <h5 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Layanan</h5>
+                        <ul class="space-y-3">
+                            <li v-for="svc in ['Sewa Lepas Kunci','Dengan Sopir + BBM','Antar Jemput Bandara','Wisata Banyuwangi','Drop Off Luar Kota']" :key="svc">
+                                <span class="text-slate-400 text-sm font-medium">{{ svc }}</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Copyright Bar -->
-                <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.3em]">
-                        © 2026 PT. Banyuwangi Trans Wisata • <span class="text-slate-700">All Rights Reserved</span>
-                    </p>
-                    <div class="flex gap-8">
-                        <a href="#" class="text-slate-600 hover:text-slate-400 transition-colors text-[10px] font-black uppercase tracking-widest">Privacy Policy</a>
-                        <a href="#" class="text-slate-600 hover:text-slate-400 transition-colors text-[10px] font-black uppercase tracking-widest">Terms of Service</a>
+                <!-- Map -->
+                <div class="rounded-2xl overflow-hidden h-48 mb-10 border border-white/5">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.63480694391!2d114.3488593!3d-8.2394277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd145f99fd54fdd%3A0xd68c459bfa1d891!2sTripBanyuwangi!5e0!3m2!1sid!2sid!4v1773287137760!5m2!1sid!2sid"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        class="grayscale hover:grayscale-0 transition-all duration-500">
+                    </iframe>
+                </div>
+
+                <!-- Copyright -->
+                <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-600 text-xs font-medium">© 2026 PT. Banyuwangi Trans Wisata. All rights reserved.</p>
+                    <div class="flex gap-6">
+                        <a href="#" class="text-slate-600 hover:text-slate-400 text-xs transition-colors">Kebijakan Privasi</a>
+                        <a href="#" class="text-slate-600 hover:text-slate-400 text-xs transition-colors">Syarat Penggunaan</a>
                     </div>
                 </div>
             </div>
         </footer>
+
+        <!-- Floating WhatsApp FAB -->
+        <a href="https://wa.me/6282339333202" target="_blank" class="fixed bottom-6 right-6 z-50 group">
+            <div class="absolute inset-0 bg-emerald-500 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity"></div>
+            <div class="relative w-14 h-14 bg-emerald-500 hover:bg-emerald-600 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all border-2 border-white">
+                <svg class="w-7 h-7 fill-white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.877 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.821 7.63h-.006c-2.712 0-5.38-.73-7.712-2.11L3 20.502l.639-2.341c-1.513-2.52-2.311-5.385-2.311-8.324 0-8.813 7.169-15.98 15.985-15.98 4.27 0 8.283 1.663 11.302 4.685 3.018 3.02 4.68 7.034 4.68 11.298 0 8.816-7.172 15.985-15.987 15.985"/></svg>
+            </div>
+            <!-- Tooltip -->
+            <span class="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl">
+                Hubungi Kami
+            </span>
+        </a>
+
     </div>
 </template>
 
-<style>
-/* Custom animations or refined styles if needed beyond Tailwind */
-@keyframes fade-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-up {
-    animation: fade-up 0.8s ease-out forwards;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-/* Glass effect for active states */
-.glass-active {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px font-bold rgba(255, 255, 255, 0.1);
-}
+<style scoped>
+html { scroll-behavior: smooth; }
 </style>

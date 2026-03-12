@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import {
     CarFront, Menu, X, ChevronRight, ChevronLeft, ChevronUp, Star, Users, Settings2, Key, UserCheck,
@@ -67,6 +67,11 @@ const cars = [
     { name: 'Hiace Premio', image: '/image/Hiace Premi.jpeg', seats: 12, trans: 'AT', year: 2022, priceSopir: 'Rp. 1.400.000 /12 jam', priceLepas: null, tag: 'Kemewahan Grup' },
     { name: 'Toyota Alphard', image: '/image/Alphard.webp', seats: 7, trans: 'Matic', year: 2022, priceSopir: 'Rp. 3.500.000 /12 jam', priceLepas: null, tag: 'Premium' },
 ];
+
+const showAllCars = ref(false);
+const displayedCars = computed(() => {
+    return showAllCars.value ? cars : cars.slice(0, 8);
+});
 
 const benefits = [
     { title: 'Armada Terawat', desc: 'Semua unit kami keluaran terbaru dengan perawatan rutin di bengkel resmi.', icon: Trophy, color: 'from-blue-500 to-blue-600' },
@@ -300,7 +305,7 @@ onUnmounted(() => {
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    <div v-for="car in cars" :key="car.name"
+                    <div v-for="car in displayedCars" :key="car.name"
                         class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col group">
                         <!-- Image -->
                         <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
@@ -357,6 +362,15 @@ onUnmounted(() => {
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <div v-if="cars.length > 8" class="mt-12 text-center">
+                    <button @click="showAllCars = !showAllCars"
+                        class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm px-8 py-3.5 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 group">
+                        {{ showAllCars ? 'Tampilkan Lebih Sedikit' : 'Lihat Semua Armada' }}
+                        <ChevronUp v-if="showAllCars" class="w-4 h-4" />
+                        <ChevronRight v-else class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
                 </div>
             </div>
         </section>
@@ -846,6 +860,6 @@ html {
 }
 
 .animate-marquee {
-    animation: marquee 50s linear infinite;
+    animation: marquee 60s linear infinite;
 }
 </style>

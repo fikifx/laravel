@@ -29,70 +29,88 @@ const stats = [
 
 const cars = [
     {
-        name: 'New Avanza (AT/MT)',
+        name: 'New Avanza',
         image: '/image/New-Avanza-Silver-Metallic-2019.jpg',
-        seats: '7 Kursi',
+        seats: 7,
         trans: 'AT/MT',
-        price: '350.000',
+        year: 2022,
+        priceSopir: 'Rp. 600.000',
+        priceLepas: 'Rp. 350.000 /24 jam',
         tag: 'Populer'
     },
     {
         name: 'New Innova Reborn',
         image: '/image/inova reboon.webp',
-        seats: '7 Kursi',
-        trans: 'Auto',
-        price: '750.000'
+        seats: 7,
+        trans: 'Matic',
+        year: 2023,
+        priceSopir: 'Rp. 950.000 /12 jam',
+        priceLepas: 'Rp. 750.000 /24 jam',
     },
     {
         name: 'Hiace Commuter',
         image: '/image/Hiace Commuter.jpg',
-        seats: '15 Kursi',
+        seats: 15,
         trans: 'Manual',
-        price: '1.100.000',
+        year: 2021,
+        priceSopir: 'Rp. 1.100.000 /12 jam',
+        priceLepas: null,
         tag: 'Grup Besar'
     },
     {
         name: 'Pajero Sport',
         image: '/image/Pajero.jpg',
-        seats: '7 Kursi',
-        trans: 'Auto',
-        price: '1.700.000'
+        seats: 7,
+        trans: 'Matic',
+        year: 2023,
+        priceSopir: 'Rp. 2.000.000',
+        priceLepas: 'Rp. 1.700.000 /24 jam',
     },
     {
         name: 'New Innova Zenix',
         image: '/image/New-Zenix.webp',
-        seats: '7 Kursi',
+        seats: 7,
         trans: 'Hybrid/AT',
-        price: '900.000'
+        year: 2024,
+        priceSopir: 'Rp. 1.200.000',
+        priceLepas: 'Rp. 900.000 /24 jam',
     },
     {
-        name: 'New Veloz (AT/MT)',
+        name: 'New Veloz',
         image: '/image/New-Veloz.webp',
-        seats: '7 Kursi',
+        seats: 7,
         trans: 'AT/MT',
-        price: '400.000'
+        year: 2024,
+        priceSopir: 'Rp. 650.000',
+        priceLepas: 'Rp. 400.000 /24 jam',
     },
     {
         name: 'Toyota Fortuner VRZ',
         image: '/image/Fortuner.jpg',
-        seats: '7 Kursi',
-        trans: 'Auto',
-        price: '1.500.000'
+        seats: 7,
+        trans: 'Matic',
+        year: 2023,
+        priceSopir: 'Rp. 1.800.000',
+        priceLepas: 'Rp. 1.500.000 /24 jam',
     },
     {
         name: 'Hiace Premio',
         image: '/image/Hiace Premi.jpeg',
-        seats: '12 Kursi',
-        trans: 'Manual/AT',
-        price: '1.400.000',
+        seats: 12,
+        trans: 'AT',
+        year: 2022,
+        priceSopir: 'Rp. 1.400.000 /12 jam',
+        priceLepas: null,
         tag: 'Kemewahan Grup'
     },
     {
         name: 'Toyota Alphard',
         image: '/image/Alphard.webp',
-        seats: '6 Kursi',
-        trans: 'VIP AT',
-        price: '3.500.000',
+        seats: 7,
+        trans: 'Matic',
+        year: 2022,
+        priceSopir: 'Rp. 3.500.000 /12 jam',
+        priceLepas: null,
         tag: 'Premium'
     }
 ];
@@ -229,42 +247,67 @@ const testimonials = [
         <!-- Catalog Section -->
         <section id="armada" class="py-24 bg-slate-50">
             <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-20">
+                <div class="text-center mb-16">
                     <span class="text-blue-600 font-black text-xs uppercase tracking-[0.3em] mb-4 inline-block">Koleksi Armada Terbaru</span>
-                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight tracking-tighter">Pilihan Sewa Mobil Terbaik di Banyuwangi</h2>
-                    <p class="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Temukan mobil yang sesuai dengan gaya dan budget perjalanan Anda. Semua unit dalam kondisi prima dan terawat.</p>
+                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Pilihan Sewa Mobil Terbaik di Banyuwangi</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Temukan mobil yang sesuai kebutuhan Anda. Semua unit dalam kondisi prima dan terawat secara berkala.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="car in cars" :key="car.name" class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 group">
-                        <div class="relative aspect-[16/10] overflow-hidden">
-                            <img :src="car.image" :alt="car.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                            <div v-if="car.tag" class="absolute top-4 left-4 bg-blue-600/90 backdrop-blur-md text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div v-for="car in cars" :key="car.name" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 group flex flex-col">
+                        
+                        <!-- Car Image -->
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img :src="car.image" :alt="car.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div v-if="car.tag" class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
                                 {{ car.tag }}
                             </div>
                         </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">{{ car.name }}</h3>
-                            <div class="flex items-center gap-4 mb-6 text-slate-500 font-bold text-sm">
-                                <div class="flex items-center gap-1">
-                                    <Users class="w-4 h-4 text-blue-500" />
-                                    <span>{{ car.seats }}</span>
+
+                        <!-- Content -->
+                        <div class="p-5 flex flex-col grow">
+                            <!-- Name -->
+                            <h3 class="text-base font-black text-slate-900 mb-4">{{ car.name }}</h3>
+
+                            <!-- Pricing -->
+                            <div class="space-y-2 mb-4">
+                                <!-- Dengan Sopir -->
+                                <div class="pb-2 border-b border-slate-100">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Dengan Sopir + BBM</p>
+                                    <p class="text-sm font-black text-blue-600">{{ car.priceSopir }}</p>
                                 </div>
+                                <!-- Lepas Kunci -->
+                                <div>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Lepas Kunci</p>
+                                    <p class="text-sm font-bold" :class="car.priceLepas ? 'text-blue-600' : 'text-slate-300'">
+                                        {{ car.priceLepas || '-' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Specs Footer -->
+                            <div class="mt-auto pt-3 border-t border-slate-100 flex items-center gap-3 text-slate-500 text-[10px] font-bold">
                                 <div class="flex items-center gap-1">
-                                    <Settings2 class="w-4 h-4 text-blue-500" />
+                                    <Settings2 class="w-3 h-3" />
+                                    <span>{{ car.year }}</span>
+                                </div>
+                                <div class="w-px h-3 bg-slate-200"></div>
+                                <div class="flex items-center gap-1">
+                                    <Users class="w-3 h-3" />
+                                    <span>{{ car.seats }} seat</span>
+                                </div>
+                                <div class="w-px h-3 bg-slate-200"></div>
+                                <div class="flex items-center gap-1">
+                                    <Key class="w-3 h-3" />
                                     <span>{{ car.trans }}</span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between pt-6 border-t border-slate-50">
-                                <div>
-                                    <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Mulai Dari</p>
-                                    <p class="text-2xl font-black text-slate-900">Rp {{ car.price }}<span class="text-sm font-bold text-slate-400 lowercase">/hari</span></p>
-                                </div>
-                                <button @click="orderWhatsApp(car.name)" class="bg-emerald-500 hover:bg-black text-white p-3 rounded-2xl transition-all shadow-lg active:scale-90">
-                                    <MessageCircle class="w-6 h-6" />
-                                </button>
-                            </div>
                         </div>
+
+                        <!-- CTA -->
+                        <button @click="orderWhatsApp(car.name)" class="mx-5 mb-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm tracking-wide transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
+                            Pesan Sekarang
+                        </button>
                     </div>
                 </div>
             </div>

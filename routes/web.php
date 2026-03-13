@@ -26,6 +26,7 @@ Route::get('/', function () {
         'terms'    => \App\Models\TermSetting::getOrDefault(),
         'faqs'     => \App\Models\FaqItem::orderBy('order_index')->get(),
         'reviews'  => \App\Models\Review::orderBy('order_index')->get(),
+        'cta'      => \App\Models\CtaSetting::getOrDefault(),
     ]);
 });
 
@@ -78,6 +79,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/reviews/edit', [\App\Http\Controllers\ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews', [\App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/reset', [\App\Http\Controllers\ReviewController::class, 'reset'])->name('reviews.reset');
+
+    // CTA Section Settings
+    Route::get('/cta/edit', [\App\Http\Controllers\CtaSettingController::class, 'edit'])->name('cta.edit');
+    Route::put('/cta', [\App\Http\Controllers\CtaSettingController::class, 'update'])->name('cta.update');
+    Route::delete('/cta/reset', [\App\Http\Controllers\CtaSettingController::class, 'reset'])->name('cta.reset');
 
 });
 

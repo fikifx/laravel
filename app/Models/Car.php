@@ -25,7 +25,12 @@ class Car extends Model
      */
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/' . $this->image) : asset('image/no-image.jpg');
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+
+        // Fallback ke file lokal no image.jpg di folder public/image
+        return asset('image/no image.jpg');
     }
 
     protected $appends = ['image_url'];

@@ -18,12 +18,17 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('landingpage/index', [
-        'cars' => \App\Models\Car::latest()->get()
+        'cars' => \App\Models\Car::latest()->get(),
+        'hero' => \App\Models\HeroSetting::getOrDefault(),
     ]);
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'stats' => [
+            'totalArmada' => \App\Models\Car::count(),
+        ],
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -32,6 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('armada', \App\Http\Controllers\CarController::class);
+
+    // Hero Section Settings
+    Route::get('/hero/edit', [\App\Http\Controllers\HeroSettingController::class, 'edit'])->name('hero.edit');
+    Route::put('/hero', [\App\Http\Controllers\HeroSettingController::class, 'update'])->name('hero.update');
+    Route::delete('/hero/reset', [\App\Http\Controllers\HeroSettingController::class, 'reset'])->name('hero.reset');
 });
 
 require __DIR__.'/auth.php';

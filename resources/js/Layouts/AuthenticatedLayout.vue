@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
-    LayoutDashboard, Car, LayoutTemplate, BarChart3, Star, ListOrdered,
+    LayoutDashboard, Car, LayoutTemplate, BarChart3, Star, ListOrdered, FileText,
     LogOut, User, ChevronRight, ExternalLink,
     Menu, X
 } from 'lucide-vue-next';
@@ -25,6 +25,7 @@ const navGroups = [
             { label: 'Stats Section', route: 'stats.edit',    icon: BarChart3 },
             { label: 'Keunggulan',    route: 'features.edit', icon: Star },
             { label: 'Cara Memesan',  route: 'steps.edit',    icon: ListOrdered },
+            { label: 'Syarat Sewa',   route: 'terms.edit',    icon: FileText },
             { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
         ],
     },

@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/vue3';
 import {
     CarFront, Menu, X, ChevronRight, ChevronLeft, ChevronUp, Star, Users, Settings2, Key, UserCheck,
     Check, AlertCircle, Quote, ArrowRight, MapPin, Phone, ShieldCheck, Heart, Map, Clock, CheckCircle,
-    CheckCircle2, Sparkles, Trophy, Users2, Zap, Car, CalendarCheck2, HelpCircle, ListOrdered
+    CheckCircle2, Sparkles, Trophy, Users2, Zap, Car, CalendarCheck2, HelpCircle, ListOrdered, FileText
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -27,6 +27,10 @@ const props = defineProps({
     steps: {
         type: Array,
         default: () => [],
+    },
+    terms: {
+        type: Object,
+        default: () => ({}),
     },
 });
 
@@ -527,7 +531,7 @@ onUnmounted(() => {
                             </div>
                         </div>
                         <ul class="space-y-3.5">
-                            <li v-for="item in ['E-KTP & Kartu Keluarga (KK) Asli', 'SIM A Aktif & Wajib Ditunjukkan', 'Jaminan Motor + STNK / Deposit', 'Survei khusus untuk pelanggan baru']"
+                            <li v-for="item in terms.lepas_kunci_items"
                                 :key="item" class="flex items-center gap-3">
                                 <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
                                     <Check class="w-3 h-3 text-blue-600" />
@@ -551,7 +555,7 @@ onUnmounted(() => {
                             </div>
                         </div>
                         <ul class="space-y-3.5">
-                            <li v-for="item in ['Durasi standar 12 jam/hari', 'BBM ditanggung dalam paket harga', 'Sopir ramah, profesional & hafal rute', 'Bisa request driver untuk wisata']"
+                            <li v-for="item in terms.dengan_sopir_items"
                                 :key="item" class="flex items-center gap-3">
                                 <div
                                     class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
@@ -564,19 +568,23 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Overtime Notice -->
-                <div
-                    class="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6">
+                <div class="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6">
                     <div class="flex items-center gap-3 text-amber-600">
                         <AlertCircle class="w-6 h-6 shrink-0" />
                         <div>
                             <p class="font-black text-slate-900 text-sm">Kebijakan Keterlambatan</p>
-                            <p class="text-slate-500 text-xs mt-0.5">Toleransi 30 menit. Lebih dari itu dikenakan biaya
-                                overtime.</p>
+                            <p class="text-slate-500 text-xs mt-0.5">{{ terms.overtime_desc }}</p>
                         </div>
                     </div>
-                    <div class="md:ml-auto text-center md:text-right">
-                        <p class="text-3xl font-black text-amber-600">+10%</p>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">per jam keterlambatan</p>
+                    <div class="md:ml-auto text-center md:text-right flex items-center gap-3">
+                        <div class="text-left w-full md:w-auto">
+                            <p class="text-[10px] uppercase font-bold text-amber-500 tracking-wider mb-0.5">Denda Overtime</p>
+                            <div class="flex items-baseline gap-1 justify-center md:justify-end">
+                                <span class="text-3xl font-black text-amber-600 leading-none">+{{ terms.overtime_percentage }}</span>
+                                <span class="text-xl font-black text-amber-600 leading-none">%</span>
+                            </div>
+                            <p class="text-[10px] font-bold text-slate-400 mt-1">DARI HARGA SEWA</p>
+                        </div>
                     </div>
                 </div>
             </div>

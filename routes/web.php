@@ -23,6 +23,7 @@ Route::get('/', function () {
         'stats'    => \App\Models\StatItem::getOrDefault(),
         'features' => \App\Models\FeatureItem::getOrDefault(),
         'steps'    => \App\Models\StepItem::getOrDefault(),
+        'terms'    => \App\Models\TermSetting::getOrDefault(),
     ]);
 });
 
@@ -60,6 +61,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/steps/edit', [\App\Http\Controllers\StepItemController::class, 'edit'])->name('steps.edit');
     Route::put('/steps', [\App\Http\Controllers\StepItemController::class, 'update'])->name('steps.update');
     Route::delete('/steps/reset', [\App\Http\Controllers\StepItemController::class, 'reset'])->name('steps.reset');
+
+    // Syarat Sewa Section Settings
+    Route::get('/terms/edit', [\App\Http\Controllers\TermSettingController::class, 'edit'])->name('terms.edit');
+    Route::put('/terms', [\App\Http\Controllers\TermSettingController::class, 'update'])->name('terms.update');
+    Route::delete('/terms/reset', [\App\Http\Controllers\TermSettingController::class, 'reset'])->name('terms.reset');
 
 });
 

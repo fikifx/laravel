@@ -208,13 +208,13 @@ onUnmounted(() => {
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <!-- Logo -->
-                    <a href="/" class="flex items-center gap-2.5 group">
+                    <a href="/" class="flex items-center gap-2.5 group" aria-label="Beranda">
                         <div
                             class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-105 transition-transform">
-                            <CarFront class="w-5 h-5 text-white" />
+                            <CarFront class="w-5 h-5 text-white" aria-hidden="true" />
                         </div>
-                        <span class="text-lg font-black text-slate-900">Rental<span
-                                class="text-blue-600">Banyuwangi</span></span>
+                        <span class="text-lg font-black text-slate-900">Thalita<span
+                                class="text-blue-600">Transport</span></span>
                     </a>
 
                     <!-- Desktop Nav -->
@@ -231,18 +231,18 @@ onUnmounted(() => {
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <a href="https://wa.me/6282339333202" target="_blank"
+                        <a href="https://wa.me/6282339333202" target="_blank" aria-label="Chat via WhatsApp"
                             class="hidden sm:flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all active:scale-95 shadow-lg shadow-emerald-200">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#25D366"
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path fill="#ffffff"
                                     d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.164-.173.199-.347.223-.644.075-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
                             </svg>
                             WhatsApp
                         </a>
-                        <button @click="toggleMenu"
+                        <button @click="toggleMenu" :aria-label="isMenuOpen ? 'Tutup Menu' : 'Buka Menu'"
                             class="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-                            <Menu v-if="!isMenuOpen" class="w-5 h-5" />
-                            <X v-else class="w-5 h-5" />
+                            <Menu v-if="!isMenuOpen" class="w-5 h-5" aria-hidden="true" />
+                            <X v-else class="w-5 h-5" aria-hidden="true" />
                         </button>
                     </div>
                 </div>
@@ -302,7 +302,7 @@ onUnmounted(() => {
                     <span class="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-500">{{ hero.subheadline }}</span>
                 </h1>
 
-                <p class="text-base md:text-lg text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+                <p class="text-base md:text-lg text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
                     {{ hero.description }}
                 </p>
 
@@ -347,18 +347,18 @@ onUnmounted(() => {
                         class="inline-block bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Koleksi
                         Armada</span>
                     <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">Pilihan Sewa Mobil Banyuwangi</h2>
-                    <p class="text-slate-500 max-w-xl mx-auto">Semua unit kondisi prima, pajak hidup, dan terawat
+                    <p class="text-slate-600 max-w-xl mx-auto">Semua unit kondisi prima, pajak hidup, dan terawat
                         berkala di
                         bengkel resmi.</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     <template v-for="car in displayedCars" :key="car.name">
                         <div v-if="car"
                             class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col group">
                         <!-- Image -->
                         <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                            <img :src="car.image_url || car.image" :alt="car.name"
+                            <img :src="car.image_url || car.image" :alt="car.name" loading="lazy" decoding="async"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             <div v-if="car.tag"
                                 class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -457,7 +457,7 @@ onUnmounted(() => {
                     <div class="relative hidden lg:block">
                         <div class="absolute -inset-6 bg-blue-500/5 rounded-[3rem]"></div>
                         <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
-                            alt="Premium Service" class="rounded-3xl w-full object-cover shadow-2xl relative z-10">
+                            alt="Layanan Premium Thalita Transport" loading="lazy" decoding="async" class="rounded-3xl w-full object-cover shadow-2xl relative z-10">
                         <!-- Floating badge -->
                         <div
                             class="absolute bottom-6 left-6 z-20 bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center gap-3">
@@ -584,7 +584,7 @@ onUnmounted(() => {
                         <AlertCircle class="w-6 h-6 shrink-0" />
                         <div>
                             <p class="font-black text-slate-900 text-sm">Kebijakan Keterlambatan</p>
-                            <p class="text-slate-500 text-xs mt-0.5">{{ terms.overtime_desc }}</p>
+                            <p class="text-slate-600 text-xs mt-0.5">{{ terms.overtime_desc }}</p>
                         </div>
                     </div>
                     <div class="md:ml-auto text-center md:text-right flex items-center gap-3">
@@ -614,11 +614,11 @@ onUnmounted(() => {
                 <div class="space-y-3">
                     <div v-for="(faq, i) in faqs" :key="'faq-'+i"
                         class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
-                        <button @click="toggleFaq(i)"
+                        <button @click="toggleFaq(i)" :aria-label="'Buka FAQ: ' + faq.question"
                             class="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none">
                             <span class="font-bold text-slate-800 text-sm pr-4">{{ faq.question }}</span>
                             <ChevronRight
-                                :class="['w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300', activeFaq === i ? 'rotate-90 text-blue-500' : '']" />
+                                :class="['w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300', activeFaq === i ? 'rotate-90 text-blue-500' : '']" aria-hidden="true" />
                         </button>
                         <div v-show="activeFaq === i" class="px-6 pb-5">
                             <div class="h-px bg-slate-100 mb-4"></div>
@@ -633,7 +633,7 @@ onUnmounted(() => {
                         <p class="font-black text-white text-lg">Masih ada pertanyaan?</p>
                         <p class="text-blue-100 text-sm">Admin kami online 24 jam untuk membantu Anda.</p>
                     </div>
-                    <a href="https://wa.me/6282339333202" target="_blank"
+                    <a href="https://wa.me/6282339333202" target="_blank" aria-label="Tanya via WhatsApp"
                         class="whitespace-nowrap px-7 py-3 bg-white text-blue-600 rounded-xl font-black text-sm hover:bg-blue-50 transition-all active:scale-95">
                         Tanya Sekarang
                     </a>
@@ -673,7 +673,7 @@ onUnmounted(() => {
                                 <p class="text-slate-600 text-sm leading-relaxed mb-6 grow italic">"{{ t.text }}"</p>
                                 <!-- Author -->
                                 <div class="flex items-center gap-3 pt-5 border-t border-slate-200">
-                                    <img :src="t.avatar" :alt="t.name" class="w-10 h-10 rounded-full">
+                                    <img :src="t.avatar" :alt="'Foto ' + t.name" loading="lazy" decoding="async" class="w-10 h-10 rounded-full">
                                     <div>
                                         <p class="font-black text-slate-900 text-sm">{{ t.name }}</p>
                                         <p class="text-[10px] text-slate-400 font-semibold">{{ t.label }}</p>
@@ -707,9 +707,9 @@ onUnmounted(() => {
                         <p class="text-slate-400 mb-10 font-medium">{{ props.cta.description || 'Hubungi kami sekarang dan dapatkan penawaran terbaik untuk perjalanan Anda.' }}</p>
 
                         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a :href="'https://wa.me/' + props.cta.wa_number" target="_blank"
+                            <a :href="'https://wa.me/' + props.cta.wa_number" target="_blank" aria-label="WhatsApp Thalita Transport"
                                 class="inline-flex items-center justify-center gap-2.5 bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-4 rounded-2xl font-black text-base transition-all active:scale-95 shadow-xl shadow-emerald-900/20">
-                                <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path fill="#ffffff"
                                         d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.164-.173.199-.347.223-.644.075-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
                                 </svg>
@@ -734,17 +734,17 @@ onUnmounted(() => {
                         <div class="flex items-center gap-3 mb-6">
                             <div
                                 class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50">
-                                <CarFront class="w-5 h-5 text-white" />
+                                <CarFront class="w-5 h-5 text-white" aria-hidden="true" />
                             </div>
-                            <span class="text-xl font-black text-white tracking-tight">Rental<span
-                                    class="text-blue-500">Banyuwangi</span></span>
+                            <span class="text-xl font-black text-white tracking-tight">Thalita<span
+                                    class="text-blue-500">Transport</span></span>
                         </div>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-8">
-                            {{ props.footer.brand_description || 'PT. Banyuwangi Trans Wisata — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani sewa mobil dengan sopir dan lepas kunci di seluruh area Banyuwangi.' }}
+                        <p class="text-slate-300 text-sm leading-relaxed mb-8">
+                            {{ props.footer.brand_description || 'Thalita Transport — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani sewa mobil dengan sopir dan lepas kunci di seluruh area Banyuwangi.' }}
                         </p>
                         <div
-                            class="flex items-center gap-3 text-slate-300 text-sm font-medium bg-white/5 w-fit px-4 py-2.5 rounded-xl border border-white/5">
-                            <Phone class="w-4 h-4 text-emerald-400" />
+                            class="flex items-center gap-3 text-slate-100 text-sm font-medium bg-white/5 w-fit px-4 py-2.5 rounded-xl border border-white/5">
+                            <Phone class="w-4 h-4 text-emerald-400" aria-hidden="true" />
                             <span>{{ props.footer.phone || '0823-3933-3202' }}</span>
                             <span
                                 class="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-2 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
@@ -821,9 +821,10 @@ onUnmounted(() => {
         <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2.5 sm:gap-3">
             <!-- Scroll to Top Button -->
             <button @click="scrollToTop"
+                aria-label="Scroll ke atas"
                 class="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-400 hover:bg-yellow-500 text-blue-900 rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all focus:outline-none group relative"
                 :class="showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0 pointer-events-none'">
-                <ChevronUp class="w-5 h-5 sm:w-6 sm:h-6" />
+                <ChevronUp class="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                 <span
                     class="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl hidden sm:block">
                     Ke Atas
@@ -832,8 +833,9 @@ onUnmounted(() => {
 
             <!-- Call Button -->
             <a :href="'tel:' + (props.footer.phone || '082339333202').replace(/[^0-9]/g, '')"
+                aria-label="Telepon Thalita Transport"
                 class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all focus:outline-none group relative">
-                <Phone class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+                <Phone class="w-4 h-4 sm:w-5 sm:h-5 fill-current" aria-hidden="true" />
                 <span
                     class="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl hidden sm:block">
                     Telepon Kami
@@ -842,8 +844,9 @@ onUnmounted(() => {
 
             <!-- WhatsApp Button -->
             <a :href="'https://wa.me/' + (props.cta.wa_number || '6282339333202')" target="_blank"
+                aria-label="Chat WhatsApp Thalita Transport"
                 class="w-10 h-10 sm:w-12 sm:h-12 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all focus:outline-none group relative">
-                <svg class="w-5 h-5 sm:w-7 sm:h-7" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-5 h-5 sm:w-7 sm:h-7" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path fill="#ffffff"
                         d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.164-.173.199-.347.223-.644.075-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
                 </svg>

@@ -55,17 +55,17 @@ class CarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Car $car)
+    public function edit(Car $armada)
     {
         return Inertia::render('Armada/Form', [
-            'car' => $car
+            'car' => $armada
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Car $car)
+    public function update(Request $request, Car $armada)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -80,13 +80,13 @@ class CarController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($car->image) {
-                Storage::disk('public')->delete($car->image);
+            if ($armada->image) {
+                Storage::disk('public')->delete($armada->image);
             }
             $validated['image'] = $request->file('image')->store('cars', 'public');
         }
 
-        $car->update($validated);
+        $armada->update($validated);
 
         return redirect()->route('armada.index')->with('message', 'Armada berhasil diperbarui.');
     }
@@ -94,12 +94,12 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Car $car)
+    public function destroy(Car $armada)
     {
-        if ($car->image) {
-            Storage::disk('public')->delete($car->image);
+        if ($armada->image) {
+            Storage::disk('public')->delete($armada->image);
         }
-        $car->delete();
+        $armada->delete();
 
         return redirect()->route('armada.index')->with('message', 'Armada berhasil dihapus.');
     }

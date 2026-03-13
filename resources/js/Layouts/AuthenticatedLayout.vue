@@ -23,6 +23,7 @@ const navGroups = [
         links: [
             { label: 'Hero Section',  route: 'hero.edit',     icon: LayoutTemplate },
             { label: 'Stats Section', route: 'stats.edit',    icon: BarChart3 },
+            { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
             { label: 'Keunggulan',    route: 'features.edit', icon: Star },
             { label: 'Cara Memesan',  route: 'steps.edit',    icon: ListOrdered },
             { label: 'Syarat Sewa',   route: 'terms.edit',    icon: FileText },
@@ -30,7 +31,6 @@ const navGroups = [
             { label: 'Ulasan Pelanggan', route: 'reviews.edit', icon: Star },
             { label: 'CTA Section', route: 'cta.edit', icon: Zap },
             { label: 'Footer Section', route: 'footer.edit', icon: LayoutTemplate },
-            { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
         ],
     },
 ];

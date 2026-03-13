@@ -57,7 +57,7 @@ const isActive = (routeName) => {
                 :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
 
                 <!-- Logo -->
-                <div class="px-5 py-5 border-b border-white/5">
+                <div class="px-5 py-6 border-b border-white/5 bg-slate-900/50 backdrop-blur-md">
                     <Link :href="route('dashboard')" class="flex items-center gap-3 group">
                         <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 group-hover:scale-105 transition-transform shrink-0">
                             <Car class="w-5 h-5 text-white" />
@@ -70,29 +70,29 @@ const isActive = (routeName) => {
                 </div>
 
                 <!-- Nav Links -->
-                <nav class="flex-1 overflow-y-auto py-5 px-3 space-y-6">
+                <nav class="flex-1 overflow-y-auto py-5 px-3 space-y-7 custom-scrollbar no-scrollbar">
                     <div v-for="group in navGroups" :key="group.label">
                         <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3 mb-2">{{ group.label }}</p>
                         <div class="space-y-1">
                             <Link v-for="link in group.links" :key="link.route"
                                 :href="route(link.route)"
                                 @click="sidebarOpen = false"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-150 group"
+                                class="flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] font-black transition-all duration-300 group relative overflow-hidden"
                                 :class="isActive(link.route)
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-900/50'
-                                    : 'text-slate-400 hover:text-white hover:bg-white/5'">
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 translate-x-1'
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1'">
                                 <component :is="link.icon"
                                     class="w-4 h-4 shrink-0 transition-colors"
                                     :class="isActive(link.route) ? 'text-white' : 'text-slate-500 group-hover:text-white'" />
                                 {{ link.label }}
-                                <ChevronRight v-if="isActive(link.route)" class="w-3.5 h-3.5 ml-auto opacity-60" />
+                                <ChevronRight v-if="isActive(link.route)" class="w-4 h-4 ml-auto opacity-40 animate-in slide-in-from-left-2 duration-300" />
                             </Link>
                         </div>
                     </div>
                 </nav>
 
                 <!-- Bottom: View Site + User -->
-                <div class="border-t border-white/5 p-3 space-y-2">
+                <div class="border-t border-white/5 p-3 space-y-2 bg-[rgb(2,6,23)]/40 backdrop-blur-md shadow-[0_-8px_30px_rgba(0,0,0,0.1)]">
                     <a href="/" target="_blank"
                         class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
                         <ExternalLink class="w-4 h-4 text-slate-500" />
@@ -151,3 +151,25 @@ const isActive = (routeName) => {
         </div>
     </div>
 </template>
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+</style>

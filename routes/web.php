@@ -25,6 +25,7 @@ Route::get('/', function () {
         'steps'    => \App\Models\StepItem::getOrDefault(),
         'terms'    => \App\Models\TermSetting::getOrDefault(),
         'faqs'     => \App\Models\FaqItem::orderBy('order_index')->get(),
+        'reviews'  => \App\Models\Review::orderBy('order_index')->get(),
     ]);
 });
 
@@ -72,6 +73,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/faqs/edit', [\App\Http\Controllers\FaqItemController::class, 'edit'])->name('faqs.edit');
     Route::put('/faqs', [\App\Http\Controllers\FaqItemController::class, 'update'])->name('faqs.update');
     Route::delete('/faqs/reset', [\App\Http\Controllers\FaqItemController::class, 'reset'])->name('faqs.reset');
+
+    // Review Section Settings
+    Route::get('/reviews/edit', [\App\Http\Controllers\ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews', [\App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/reset', [\App\Http\Controllers\ReviewController::class, 'reset'])->name('reviews.reset');
 
 });
 

@@ -27,6 +27,7 @@ const navGroups = [
             { label: 'Cara Memesan',  route: 'steps.edit',    icon: ListOrdered },
             { label: 'Syarat Sewa',   route: 'terms.edit',    icon: FileText },
             { label: 'Pertanyaan Umum', route: 'faqs.edit', icon: MessageCircleQuestion },
+            { label: 'Ulasan Pelanggan', route: 'reviews.edit', icon: Star },
             { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
         ],
     },

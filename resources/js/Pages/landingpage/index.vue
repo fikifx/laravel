@@ -36,6 +36,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    reviews: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const isMenuOpen = ref(false);
@@ -145,13 +149,15 @@ onMounted(() => {
 });
 
 
-const testimonials = [
-    { name: 'Susi Kiki', role: 'Wisatawan', avatar: 'https://ui-avatars.com/api/?name=Susi+Kiki&background=3b82f6&color=fff&bold=true', text: 'Puas banget! Driver sangat ramah dan hafal tempat wisata. Mobil bersih dan nyaman. Highly recommended!', label: 'Dengan Sopir · 6 Bulan Lalu', rating: 5 },
-    { name: 'CV Unggas Jaya', role: 'Mitra Bisnis', avatar: 'https://ui-avatars.com/api/?name=Unggas+Jaya&background=10b981&color=fff&bold=true', text: 'Lepas kunci Innova Reborn, antar ke bandara Blimbingsari. Mobil baru, wangi, dan yang antar sangat ramah. Gak ribet sama sekali!', label: 'Lepas Kunci · 2 Bulan Lalu', rating: 5 },
-    { name: 'Rida Setiani', role: 'Wisatawan Keluarga', avatar: 'https://ui-avatars.com/api/?name=Rida+Setiani&background=8b5cf6&color=fff&bold=true', text: 'Pelayanan sangat memuaskan, mobil prima, driver hafal jalan dan enak diajak ngobrol. Terima kasih Banyuwangi Trans Wisata!', label: 'Wisata Keluarga · 1 Tahun Lalu', rating: 5 },
-];
-
-const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
+const duplicatedTestimonials = computed(() => {
+    if (props.reviews.length === 0) return [];
+    let list = [...props.reviews];
+    // Duplicate to ensure at least 6-8 items for smooth marquee
+    if (list.length < 6) {
+        list = [...list, ...list, ...list];
+    }
+    return [...list, ...list];
+});
 
 // Scroll to Top Logic
 const showScrollTop = ref(false);
@@ -647,7 +653,7 @@ onUnmounted(() => {
                 <div class="relative max-w-[100vw] overflow-hidden -mx-4 md:mx-auto mt-12 py-4 mask-edges">
                     <div class="flex gap-6 animate-marquee w-max hover:[animation-play-state:paused]">
                         <!-- Loop the duplicated list twice inside the flex track to ensure seamless scroll -->
-                        <div v-for="(t, idx) in [...duplicatedTestimonials, ...duplicatedTestimonials]" :key="idx"
+                        <div v-for="(t, idx) in duplicatedTestimonials" :key="idx"
                             class="w-80 md:w-96 shrink-0">
                             <div
                                 class="bg-slate-50 rounded-2xl p-7 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full cursor-grab active:cursor-grabbing">

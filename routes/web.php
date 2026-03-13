@@ -18,9 +18,11 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('landingpage/index', [
-        'cars'  => \App\Models\Car::latest()->get(),
-        'hero'  => \App\Models\HeroSetting::getOrDefault(),
-        'stats' => \App\Models\StatItem::getOrDefault(),
+        'cars'     => \App\Models\Car::latest()->get(),
+        'hero'     => \App\Models\HeroSetting::getOrDefault(),
+        'stats'    => \App\Models\StatItem::getOrDefault(),
+        'features' => \App\Models\FeatureItem::getOrDefault(),
+        'steps'    => \App\Models\StepItem::getOrDefault(),
     ]);
 });
 
@@ -48,6 +50,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/stats/edit', [\App\Http\Controllers\StatItemController::class, 'edit'])->name('stats.edit');
     Route::put('/stats', [\App\Http\Controllers\StatItemController::class, 'update'])->name('stats.update');
     Route::delete('/stats/reset', [\App\Http\Controllers\StatItemController::class, 'reset'])->name('stats.reset');
+
+    // Keunggulan Section Settings
+    Route::get('/features/edit', [\App\Http\Controllers\FeatureItemController::class, 'edit'])->name('features.edit');
+    Route::put('/features', [\App\Http\Controllers\FeatureItemController::class, 'update'])->name('features.update');
+    Route::delete('/features/reset', [\App\Http\Controllers\FeatureItemController::class, 'reset'])->name('features.reset');
+
+    // Cara Memesan Section Settings
+    Route::get('/steps/edit', [\App\Http\Controllers\StepItemController::class, 'edit'])->name('steps.edit');
+    Route::put('/steps', [\App\Http\Controllers\StepItemController::class, 'update'])->name('steps.update');
+    Route::delete('/steps/reset', [\App\Http\Controllers\StepItemController::class, 'reset'])->name('steps.reset');
+
 });
 
 require __DIR__.'/auth.php';

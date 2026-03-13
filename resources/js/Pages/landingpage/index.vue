@@ -3,8 +3,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import {
     CarFront, Menu, X, ChevronRight, ChevronLeft, ChevronUp, Star, Users, Settings2, Key, UserCheck,
-    Check, AlertCircle, Quote, ArrowRight, MapPin, Phone, ShieldCheck,
-    Sparkles, Trophy, Users2, Zap, Car, CalendarCheck2, HelpCircle
+    Check, AlertCircle, Quote, ArrowRight, MapPin, Phone, ShieldCheck, Heart, Map, Clock, CheckCircle,
+    CheckCircle2, Sparkles, Trophy, Users2, Zap, Car, CalendarCheck2, HelpCircle, ListOrdered
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -17,6 +17,14 @@ const props = defineProps({
         default: () => ({}),
     },
     stats: {
+        type: Array,
+        default: () => [],
+    },
+    features: {
+        type: Array,
+        default: () => [],
+    },
+    steps: {
         type: Array,
         default: () => [],
     },
@@ -86,18 +94,33 @@ const displayedCars = computed(() => {
     return showAllCars.value ? allCars.value : allCars.value.slice(0, 8);
 });
 
-const benefits = [
-    { title: 'Armada Terawat', desc: 'Semua unit kami keluaran terbaru dengan perawatan rutin di bengkel resmi.', icon: Trophy, color: 'from-blue-500 to-blue-600' },
-    { title: 'Sopir Berpengalaman', desc: 'Driver ramah, profesional, dan hafal rute wisata Banyuwangi.', icon: Users2, color: 'from-emerald-500 to-emerald-600' },
-    { title: 'Harga Transparan', desc: 'Harga yang kami kutip adalah harga final. Tanpa biaya tersembunyi.', icon: Sparkles, color: 'from-amber-500 to-orange-500' },
-    { title: 'Respon 24/7', desc: 'Admin siap membantu Anda kapan saja melalui WhatsApp.', icon: Zap, color: 'from-purple-500 to-purple-600' },
-];
+// Helper for dynamic feature icons
+const featureIcons = {
+    Trophy, Users2, Sparkles, Zap, ShieldCheck, Heart, Car, Map, Clock, CheckCircle: CheckCircle2
+};
+const getFeatureIcon = (iconName) => {
+    return featureIcons[iconName] || CheckCircle2;
+};
 
-const steps = [
-    { num: '01', title: 'Pilih Armada', desc: 'Tentukan unit yang sesuai kebutuhan dan budget Anda.', icon: Car },
-    { num: '02', title: 'Konfirmasi via Chat', desc: 'Konsultasikan jadwal dan detail perjalanan via WhatsApp.', icon: CalendarCheck2 },
-    { num: '03', title: 'Siap Berangkat!', desc: 'Unit diantarkan ke lokasi Anda. Selamat menikmati perjalanan.', icon: Check },
-];
+// Helper for dynamic feature colors
+const colorGradients = {
+    blue: 'from-blue-500 to-blue-600',
+    emerald: 'from-emerald-500 to-emerald-600',
+    amber: 'from-amber-500 to-orange-500',
+    purple: 'from-purple-500 to-purple-600',
+    rose: 'from-rose-500 to-rose-600',
+    slate: 'from-slate-500 to-slate-600',
+};
+const getFeatureColor = (theme) => {
+    return colorGradients[theme] || 'from-blue-500 to-blue-600';
+};
+// Helper for dynamic step icons
+const stepIcons = {
+    Car, CalendarCheck2, Check, CheckCircle2, ShieldCheck, Clock, MapPin, Phone, UserCheck, Star, Zap
+};
+const getStepIcon = (iconName) => {
+    return stepIcons[iconName] || CheckCircle2;
+};
 
 const stepsRef = ref(null);
 const stepsVisible = ref(false);
@@ -404,14 +427,14 @@ onUnmounted(() => {
                         </p>
 
                         <div class="grid sm:grid-cols-2 gap-5">
-                            <div v-for="b in benefits" :key="b.title"
+                            <div v-for="feature in features" :key="feature.title"
                                 class="group p-5 rounded-2xl bg-slate-50 hover:bg-white hover:shadow-md border border-transparent hover:border-slate-100 transition-all cursor-default">
                                 <div
-                                    :class="`w-11 h-11 rounded-xl bg-gradient-to-br ${b.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`">
-                                    <component :is="b.icon" class="w-5 h-5 text-white" />
+                                    :class="['w-11 h-11 rounded-xl bg-gradient-to-br flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform', getFeatureColor(feature.color_theme)]">
+                                    <component :is="getFeatureIcon(feature.icon)" class="w-5 h-5 text-white" />
                                 </div>
-                                <h4 class="font-black text-slate-900 text-sm mb-1">{{ b.title }}</h4>
-                                <p class="text-slate-500 text-xs leading-relaxed">{{ b.desc }}</p>
+                                <h4 class="font-black text-slate-900 text-sm mb-1">{{ feature.title }}</h4>
+                                <p class="text-slate-500 text-xs leading-relaxed">{{ feature.description || feature.desc }}</p>
                             </div>
                         </div>
                     </div>
@@ -451,60 +474,30 @@ onUnmounted(() => {
                         class="hidden md:block absolute top-12 left-[18%] right-[18%] h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent">
                     </div>
 
-                    <!-- Step 1: slide from LEFT -->
-                    <div class="flex flex-col items-center p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-700"
-                        :class="stepsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'"
-                        style="transition-delay: 0ms;">
+                    <!-- Step Cards (Dynamic) -->
+                    <div v-for="(step, i) in steps" :key="step.title"
+                        class="flex flex-col items-center p-8 rounded-3xl backdrop-blur-sm transition-all duration-700"
+                        :class="[
+                            i === 1 ? 'border border-blue-500/50 bg-blue-600/20' : 'border border-white/10 bg-white/5',
+                            stepsVisible 
+                                ? 'opacity-100 translate-x-0 translate-y-0 scale-100' 
+                                : `opacity-0 ${i === 1 ? 'translate-y-16 scale-95' : (i === 0 ? '-translate-x-20' : 'translate-x-20')}`
+                        ]"
+                        :style="{ transitionDelay: `${i * 200}ms` }">
                         <div class="relative w-24 h-24 flex items-center justify-center mb-6">
-                            <div class="absolute inset-0 bg-blue-500/20 rounded-3xl"></div>
-                            <div
-                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-xl shadow-blue-900/50 relative group-hover:scale-110 transition-transform">
-                                <car-front class="w-10 h-10 text-white" />
-                                <span
-                                    class="absolute -top-2 -right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center text-blue-600 font-black text-xs shadow-lg">1</span>
+                            <div class="absolute inset-0 rounded-3xl" 
+                                :class="i === 1 ? 'bg-blue-400/20 animate-pulse' : (i === 0 ? 'bg-blue-500/20' : 'bg-emerald-500/20')"></div>
+                            <div class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl relative group-hover:scale-110 transition-transform"
+                                :class="i === 1 ? 'bg-gradient-to-br from-indigo-400 to-blue-600 shadow-blue-900/50' : (i === 0 ? 'bg-gradient-to-br from-blue-500 to-blue-700 shadow-blue-900/50' : 'bg-gradient-to-br from-emerald-500 to-teal-600 shadow-emerald-900/50')">
+                                <component :is="getStepIcon(step.icon)" class="w-10 h-10 text-white" />
+                                <span class="absolute -top-2 -right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center text-xs font-black shadow-lg"
+                                    :class="i === 1 ? 'text-blue-600' : (i === 0 ? 'text-blue-600' : 'text-emerald-600')">
+                                    {{ i + 1 }}
+                                </span>
                             </div>
                         </div>
-                        <h4 class="text-white font-black text-xl mb-3">Pilih Armada</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed">Tentukan unit yang sesuai kebutuhan dan budget
-                            Anda.
-                        </p>
-                    </div>
-
-                    <!-- Step 2: fade from BOTTOM -->
-                    <div class="flex flex-col items-center p-8 rounded-3xl border border-blue-500/50 bg-blue-600/20 backdrop-blur-sm transition-all duration-700"
-                        :class="stepsVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'"
-                        style="transition-delay: 200ms;">
-                        <div class="relative w-24 h-24 flex items-center justify-center mb-6">
-                            <div class="absolute inset-0 bg-blue-400/20 rounded-3xl animate-pulse"></div>
-                            <div
-                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-400 to-blue-600 flex items-center justify-center shadow-xl shadow-blue-900/50 relative">
-                                <CalendarCheck2 class="w-10 h-10 text-white" />
-                                <span
-                                    class="absolute -top-2 -right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center text-blue-600 font-black text-xs shadow-lg">2</span>
-                            </div>
-                        </div>
-                        <h4 class="text-white font-black text-xl mb-3">Konfirmasi via Chat</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed">Konsultasikan jadwal dan detail perjalanan via
-                            WhatsApp.</p>
-                    </div>
-
-                    <!-- Step 3: slide from RIGHT -->
-                    <div class="flex flex-col items-center p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-700"
-                        :class="stepsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'"
-                        style="transition-delay: 400ms;">
-                        <div class="relative w-24 h-24 flex items-center justify-center mb-6">
-                            <div class="absolute inset-0 bg-emerald-500/20 rounded-3xl"></div>
-                            <div
-                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-xl shadow-emerald-900/50 relative">
-                                <Check class="w-10 h-10 text-white" />
-                                <span
-                                    class="absolute -top-2 -right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center text-emerald-600 font-black text-xs shadow-lg">3</span>
-                            </div>
-                        </div>
-                        <h4 class="text-white font-black text-xl mb-3">Siap Berangkat!</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed">Unit diantarkan ke lokasi Anda. Selamat
-                            menikmati
-                            perjalanan.</p>
+                        <h4 class="text-white font-black text-xl mb-3 text-center">{{ step.title }}</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed text-center">{{ step.description || step.desc }}</p>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
-    LayoutDashboard, Car, LayoutTemplate, BarChart3,
+    LayoutDashboard, Car, LayoutTemplate, BarChart3, Star, ListOrdered,
     LogOut, User, ChevronRight, ExternalLink,
     Menu, X
 } from 'lucide-vue-next';
@@ -21,9 +21,11 @@ const navGroups = [
     {
         label: 'Kelola Konten',
         links: [
-            { label: 'Hero Section',  route: 'hero.edit',    icon: LayoutTemplate },
-            { label: 'Stats Section', route: 'stats.edit',   icon: BarChart3 },
-            { label: 'Kelola Armada', route: 'armada.index', icon: Car },
+            { label: 'Hero Section',  route: 'hero.edit',     icon: LayoutTemplate },
+            { label: 'Stats Section', route: 'stats.edit',    icon: BarChart3 },
+            { label: 'Keunggulan',    route: 'features.edit', icon: Star },
+            { label: 'Cara Memesan',  route: 'steps.edit',    icon: ListOrdered },
+            { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
         ],
     },
 ];

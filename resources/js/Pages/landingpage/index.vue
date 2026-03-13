@@ -32,6 +32,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    faqs: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const isMenuOpen = ref(false);
@@ -140,13 +144,6 @@ onMounted(() => {
     if (stepsRef.value) stepsObserver.observe(stepsRef.value);
 });
 
-const faqs = [
-    { q: 'Apakah bisa sewa mobil lepas kunci?', a: 'Ya, kami melayani lepas kunci dengan syarat E-KTP, KK, dan SIM A aktif, serta jaminan.' },
-    { q: 'Bagaimana jika terjadi kendala selama perjalanan?', a: 'Kami menyediakan bantuan darurat 24 jam. Tim kami akan segera merespons dan mengirim unit pengganti bila diperlukan.' },
-    { q: 'Apakah harga sudah include BBM dan sopir?', a: 'Ada dua paket: Dengan Sopir + BBM (all-in) dan Lepas Kunci (unit saja). Detail harga tertera di setiap kartu armada.' },
-    { q: 'Bisa antar jemput bandara atau stasiun?', a: 'Tentu! Kami melayani antar-jemput di Bandara Blimbingsari, Stasiun Banyuwangi Kota, maupun hotel Anda.' },
-    { q: 'Berapa biaya overtime jika terlambat mengembalikan?', a: 'Toleransi 30 menit, setelah itu dikenakan biaya tambahan 10% dari harga sewa per jam.' },
-];
 
 const testimonials = [
     { name: 'Susi Kiki', role: 'Wisatawan', avatar: 'https://ui-avatars.com/api/?name=Susi+Kiki&background=3b82f6&color=fff&bold=true', text: 'Puas banget! Driver sangat ramah dan hafal tempat wisata. Mobil bersih dan nyaman. Highly recommended!', label: 'Dengan Sopir · 6 Bulan Lalu', rating: 5 },
@@ -601,17 +598,17 @@ onUnmounted(() => {
                 </div>
 
                 <div class="space-y-3">
-                    <div v-for="(faq, i) in faqs" :key="i"
+                    <div v-for="(faq, i) in faqs" :key="'faq-'+i"
                         class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
                         <button @click="toggleFaq(i)"
                             class="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none">
-                            <span class="font-bold text-slate-800 text-sm pr-4">{{ faq.q }}</span>
+                            <span class="font-bold text-slate-800 text-sm pr-4">{{ faq.question }}</span>
                             <ChevronRight
                                 :class="['w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300', activeFaq === i ? 'rotate-90 text-blue-500' : '']" />
                         </button>
                         <div v-show="activeFaq === i" class="px-6 pb-5">
                             <div class="h-px bg-slate-100 mb-4"></div>
-                            <p class="text-slate-500 text-sm leading-relaxed">{{ faq.a }}</p>
+                            <p class="text-slate-500 text-sm leading-relaxed">{{ faq.answer }}</p>
                         </div>
                     </div>
                 </div>

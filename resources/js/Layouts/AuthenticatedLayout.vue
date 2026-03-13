@@ -4,7 +4,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     LayoutDashboard, Car, LayoutTemplate, BarChart3, Star, ListOrdered, FileText,
     LogOut, User, ChevronRight, ExternalLink,
-    Menu, X
+    Menu, X, MessageCircleQuestion
 } from 'lucide-vue-next';
 
 const page = usePage();
@@ -26,6 +26,7 @@ const navGroups = [
             { label: 'Keunggulan',    route: 'features.edit', icon: Star },
             { label: 'Cara Memesan',  route: 'steps.edit',    icon: ListOrdered },
             { label: 'Syarat Sewa',   route: 'terms.edit',    icon: FileText },
+            { label: 'Pertanyaan Umum', route: 'faqs.edit', icon: MessageCircleQuestion },
             { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
         ],
     },

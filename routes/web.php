@@ -24,6 +24,7 @@ Route::get('/', function () {
         'features' => \App\Models\FeatureItem::getOrDefault(),
         'steps'    => \App\Models\StepItem::getOrDefault(),
         'terms'    => \App\Models\TermSetting::getOrDefault(),
+        'faqs'     => \App\Models\FaqItem::orderBy('order_index')->get(),
     ]);
 });
 
@@ -66,6 +67,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/terms/edit', [\App\Http\Controllers\TermSettingController::class, 'edit'])->name('terms.edit');
     Route::put('/terms', [\App\Http\Controllers\TermSettingController::class, 'update'])->name('terms.update');
     Route::delete('/terms/reset', [\App\Http\Controllers\TermSettingController::class, 'reset'])->name('terms.reset');
+
+    // FAQ Section Settings
+    Route::get('/faqs/edit', [\App\Http\Controllers\FaqItemController::class, 'edit'])->name('faqs.edit');
+    Route::put('/faqs', [\App\Http\Controllers\FaqItemController::class, 'update'])->name('faqs.update');
+    Route::delete('/faqs/reset', [\App\Http\Controllers\FaqItemController::class, 'reset'])->name('faqs.reset');
 
 });
 

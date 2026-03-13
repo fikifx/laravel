@@ -27,6 +27,7 @@ Route::get('/', function () {
         'faqs'     => \App\Models\FaqItem::orderBy('order_index')->get(),
         'reviews'  => \App\Models\Review::orderBy('order_index')->get(),
         'cta'      => \App\Models\CtaSetting::getOrDefault(),
+        'footer'   => \App\Models\FooterSetting::getOrDefault(),
     ]);
 });
 
@@ -84,6 +85,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/cta/edit', [\App\Http\Controllers\CtaSettingController::class, 'edit'])->name('cta.edit');
     Route::put('/cta', [\App\Http\Controllers\CtaSettingController::class, 'update'])->name('cta.update');
     Route::delete('/cta/reset', [\App\Http\Controllers\CtaSettingController::class, 'reset'])->name('cta.reset');
+
+    // Footer Section Settings
+    Route::get('/footer/edit', [\App\Http\Controllers\FooterSettingController::class, 'edit'])->name('footer.edit');
+    Route::put('/footer', [\App\Http\Controllers\FooterSettingController::class, 'update'])->name('footer.update');
+    Route::delete('/footer/reset', [\App\Http\Controllers\FooterSettingController::class, 'reset'])->name('footer.reset');
 
 });
 

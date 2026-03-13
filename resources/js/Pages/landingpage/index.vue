@@ -44,6 +44,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    footer: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
 const isMenuOpen = ref(false);
@@ -736,14 +740,12 @@ onUnmounted(() => {
                                     class="text-blue-500">Banyuwangi</span></span>
                         </div>
                         <p class="text-slate-400 text-sm leading-relaxed mb-8">
-                            PT. Banyuwangi Trans Wisata — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani
-                            sewa mobil
-                            dengan sopir dan lepas kunci di seluruh area Banyuwangi.
+                            {{ props.footer.brand_description || 'PT. Banyuwangi Trans Wisata — mitra perjalanan terpercaya Anda sejak 2018. Kami melayani sewa mobil dengan sopir dan lepas kunci di seluruh area Banyuwangi.' }}
                         </p>
                         <div
                             class="flex items-center gap-3 text-slate-300 text-sm font-medium bg-white/5 w-fit px-4 py-2.5 rounded-xl border border-white/5">
                             <Phone class="w-4 h-4 text-emerald-400" />
-                            <span>0823-3933-3202</span>
+                            <span>{{ props.footer.phone || '0823-3933-3202' }}</span>
                             <span
                                 class="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-2 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
                             <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">Online 24/7</span>
@@ -756,7 +758,7 @@ onUnmounted(() => {
                             class="text-white font-bold text-sm tracking-widest mb-6 border-b border-white/10 pb-3 inline-block">
                             NAVIGASI</h5>
                         <ul class="space-y-4">
-                            <li v-for="link in [{ label: 'Beranda', href: '#home' }, { label: 'Armada', href: '#armada' }, { label: 'Syarat Sewa', href: '#syarat' }, { label: 'Ulasan', href: '#reviews' }]"
+                            <li v-for="link in (props.footer.footer_nav || [{ label: 'Beranda', href: '#home' }, { label: 'Armada', href: '#armada' }, { label: 'Syarat Sewa', href: '#syarat' }, { label: 'Ulasan', href: '#reviews' }])"
                                 :key="link.label">
                                 <a :href="link.href"
                                     class="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 group">
@@ -774,7 +776,7 @@ onUnmounted(() => {
                             class="text-white font-bold text-sm tracking-widest mb-6 border-b border-white/10 pb-3 inline-block">
                             LAYANAN UTAMA</h5>
                         <ul class="space-y-4">
-                            <li v-for="svc in ['Sewa Mobil Lepas Kunci', 'Sewa Mobil + Sopir & BBM', 'Antar Jemput Bandara Blimbingsari', 'Paket Wisata Banyuwangi', 'Drop Off Luar Kota']"
+                            <li v-for="svc in (props.footer.services || ['Sewa Mobil Lepas Kunci', 'Sewa Mobil + Sopir & BBM', 'Antar Jemput Bandara Blimbingsari', 'Paket Wisata Banyuwangi', 'Drop Off Luar Kota'])"
                                 :key="svc">
                                 <span
                                     class="text-slate-400 hover:text-white transition-colors cursor-default text-sm font-medium flex items-center gap-2">
@@ -793,7 +795,7 @@ onUnmounted(() => {
                         <div
                             class="rounded-xl overflow-hidden h-32 lg:h-40 border border-white/10 shadow-lg shadow-black/50">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.63480694391!2d114.3488593!3d-8.2394277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd145f99fd54fdd%3A0xd68c459bfa1d891!2sTripBanyuwangi!5e0!3m2!1sid!2sid!4v1773287137760!5m2!1sid!2sid"
+                                :src="props.footer.maps_link || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.63480694391!2d114.3488593!3d-8.2394277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd145f99fd54fdd%3A0xd68c459bfa1d891!2sTripBanyuwangi!5e0!3m2!1sid!2sid!4v1773287137760!5m2!1sid!2sid'"
                                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade"
                                 class="grayscale hover:grayscale-0 transition-all duration-500">
@@ -804,8 +806,7 @@ onUnmounted(() => {
 
                 <!-- Copyright -->
                 <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p class="text-slate-600 text-xs font-medium">© 2026 PT. Banyuwangi Trans Wisata. All rights
-                        reserved.</p>
+                    <p class="text-slate-600 text-xs font-medium">{{ props.footer.copyright_text || '© 2026 PT. Banyuwangi Trans Wisata. All rights reserved.' }}</p>
                     <div class="flex gap-6">
                         <a href="#" class="text-slate-600 hover:text-slate-400 text-xs transition-colors">Kebijakan
                             Privasi</a>
@@ -830,7 +831,7 @@ onUnmounted(() => {
             </button>
 
             <!-- Call Button -->
-            <a href="tel:082339333202"
+            <a :href="'tel:' + (props.footer.phone || '082339333202').replace(/[^0-9]/g, '')"
                 class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all focus:outline-none group relative">
                 <Phone class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                 <span
@@ -840,7 +841,7 @@ onUnmounted(() => {
             </a>
 
             <!-- WhatsApp Button -->
-            <a href="https://wa.me/6282339333202" target="_blank"
+            <a :href="'https://wa.me/' + (props.cta.wa_number || '6282339333202')" target="_blank"
                 class="w-10 h-10 sm:w-12 sm:h-12 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all focus:outline-none group relative">
                 <svg class="w-5 h-5 sm:w-7 sm:h-7" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#ffffff"

@@ -29,6 +29,7 @@ const navGroups = [
             { label: 'Pertanyaan Umum', route: 'faqs.edit', icon: MessageCircleQuestion },
             { label: 'Ulasan Pelanggan', route: 'reviews.edit', icon: Star },
             { label: 'CTA Section', route: 'cta.edit', icon: Zap },
+            { label: 'Footer Section', route: 'footer.edit', icon: LayoutTemplate },
             { label: 'Kelola Armada', route: 'armada.index',  icon: Car },
         ],
     },

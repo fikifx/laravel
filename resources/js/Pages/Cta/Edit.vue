@@ -157,10 +157,19 @@ const doReset = () => {
                         </div>
                     </div>
 
-                    <!-- PREVIEW PANEL (RIGHT) -->
                     <div class="lg:col-span-1 sticky top-8 space-y-6">
                         <div class="bg-indigo-900 rounded-[40px] p-2 shadow-2xl shadow-indigo-200/50 overflow-hidden border border-indigo-800">
-                            <div class="bg-slate-900 rounded-[38px] p-8 relative overflow-hidden text-center">
+                            <!-- Mac-style Header -->
+                            <div class="px-5 py-3.5 border-b border-indigo-800/50 flex items-center gap-2 bg-indigo-900/50">
+                                <div class="flex gap-1.5">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-red-400/80"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-yellow-400/80"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-green-400/80"></div>
+                                </div>
+                                <span class="text-[10px] font-black text-indigo-300 uppercase tracking-widest ml-1">Live Preview</span>
+                            </div>
+                            
+                            <div class="bg-slate-900 rounded-b-[38px] rounded-t-none p-8 relative overflow-hidden text-center">
                                 <!-- Background Accents -->
                                 <div class="absolute top-0 right-0 w-40 h-40 bg-blue-500/20 rounded-full blur-[40px]"></div>
                                 <div class="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-[30px]"></div>

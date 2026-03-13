@@ -2,172 +2,145 @@
 import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import {
-    LayoutDashboard, Car, ChevronDown, LogOut, User,
-    Menu, X, ExternalLink, LayoutTemplate
+    LayoutDashboard, Car, LayoutTemplate, BarChart3,
+    LogOut, User, ChevronRight, ExternalLink,
+    Menu, X
 } from 'lucide-vue-next';
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
-const showingNavigationDropdown = ref(false);
-const showUserDropdown = ref(false);
+const sidebarOpen = ref(false);
 
-const navLinks = [
-    { label: 'Dashboard', route: 'dashboard', icon: LayoutDashboard },
-    { label: 'Kelola Armada', route: 'armada.index', icon: Car },
-    { label: 'Hero Section', route: 'hero.edit', icon: LayoutTemplate },
+const navGroups = [
+    {
+        label: 'Umum',
+        links: [
+            { label: 'Dashboard', route: 'dashboard', icon: LayoutDashboard },
+        ],
+    },
+    {
+        label: 'Kelola Konten',
+        links: [
+            { label: 'Hero Section',  route: 'hero.edit',    icon: LayoutTemplate },
+            { label: 'Stats Section', route: 'stats.edit',   icon: BarChart3 },
+            { label: 'Kelola Armada', route: 'armada.index', icon: Car },
+        ],
+    },
 ];
+
+const isActive = (routeName) => {
+    try { return route().current(routeName); } catch { return false; }
+};
 </script>
 
 <template>
     <div style="font-family: 'Plus Jakarta Sans', sans-serif;">
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-        <div class="min-h-screen bg-slate-50">
+        <div class="min-h-screen bg-slate-50 flex">
 
-            <!-- ===== TOP NAVBAR ===== -->
-            <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-sm">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between h-16">
+            <!-- ===== SIDEBAR ===== -->
+            <!-- Overlay (mobile) -->
+            <div v-if="sidebarOpen" @click="sidebarOpen = false"
+                class="fixed inset-0 bg-slate-900/50 z-30 lg:hidden backdrop-blur-sm"></div>
 
-                        <!-- Logo -->
-                        <Link :href="route('dashboard')" class="flex items-center gap-2.5 group">
-                            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-105 transition-transform">
-                                <Car class="w-5 h-5 text-white" />
-                            </div>
-                            <div class="leading-none">
-                                <span class="text-base font-black text-slate-900">Rental<span class="text-blue-600">Banyuwangi</span></span>
-                                <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">Admin Panel</span>
-                            </div>
-                        </Link>
+            <!-- Sidebar panel -->
+            <aside
+                class="fixed top-0 left-0 h-full w-64 bg-slate-900 z-40 flex flex-col transition-transform duration-300 ease-in-out"
+                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
 
-                        <!-- Desktop Nav Links -->
-                        <div class="hidden sm:flex items-center gap-1">
-                            <template v-for="link in navLinks" :key="link.route">
-                                <Link
-                                    :href="route(link.route)"
-                                    class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200"
-                                    :class="route().current(link.route)
-                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
-                                        : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'"
-                                >
-                                    <component :is="link.icon" class="w-4 h-4" />
-                                    {{ link.label }}
-                                </Link>
-                            </template>
+                <!-- Logo -->
+                <div class="px-5 py-5 border-b border-white/5">
+                    <Link :href="route('dashboard')" class="flex items-center gap-3 group">
+                        <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/50 group-hover:scale-105 transition-transform shrink-0">
+                            <Car class="w-5 h-5 text-white" />
                         </div>
-
-                        <!-- Right Side -->
-                        <div class="hidden sm:flex items-center gap-3">
-                            <!-- View Landing Page -->
-                            <a href="/" target="_blank"
-                                class="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors px-3 py-2 rounded-xl hover:bg-blue-50">
-                                <ExternalLink class="w-3.5 h-3.5" />
-                                Lihat Landing Page
-                            </a>
-
-                            <!-- User Dropdown -->
-                            <div class="relative">
-                                <button @click="showUserDropdown = !showUserDropdown"
-                                    class="flex items-center gap-2.5 pl-3 pr-2 py-2 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 transition-all group">
-                                    <div class="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-black">
-                                        {{ user.name?.charAt(0).toUpperCase() }}
-                                    </div>
-                                    <div class="text-left leading-none">
-                                        <p class="text-xs font-black text-slate-800">{{ user.name }}</p>
-                                        <p class="text-[10px] text-slate-400 font-medium">Administrator</p>
-                                    </div>
-                                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 transition-transform" :class="showUserDropdown ? 'rotate-180' : ''" />
-                                </button>
-
-                                <!-- Dropdown -->
-                                <Transition
-                                    enter-active-class="transition duration-150 ease-out"
-                                    enter-from-class="opacity-0 scale-95 translate-y-1"
-                                    enter-to-class="opacity-100 scale-100 translate-y-0"
-                                    leave-active-class="transition duration-100 ease-in"
-                                    leave-from-class="opacity-100 scale-100"
-                                    leave-to-class="opacity-0 scale-95 translate-y-1"
-                                >
-                                    <div v-show="showUserDropdown" @click.away="showUserDropdown = false"
-                                        class="absolute right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50 py-1">
-                                        <div class="px-4 py-3 border-b border-slate-100">
-                                            <p class="text-xs font-black text-slate-900">{{ user.name }}</p>
-                                            <p class="text-[11px] text-slate-400">{{ user.email }}</p>
-                                        </div>
-                                        <Link :href="route('profile.edit')" class="flex items-center gap-2.5 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                                            <User class="w-4 h-4" />
-                                            Profil Saya
-                                        </Link>
-                                        <Link :href="route('logout')" method="post" as="button"
-                                            class="flex items-center gap-2.5 w-full px-4 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors">
-                                            <LogOut class="w-4 h-4" />
-                                            Keluar
-                                        </Link>
-                                    </div>
-                                </Transition>
-                            </div>
+                        <div class="leading-none">
+                            <span class="text-sm font-black text-white">Rental<span class="text-blue-400">Banyuwangi</span></span>
+                            <span class="block text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Admin Panel</span>
                         </div>
+                    </Link>
+                </div>
 
-                        <!-- Mobile Hamburger -->
-                        <button @click="showingNavigationDropdown = !showingNavigationDropdown"
-                            class="sm:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-                            <Menu v-if="!showingNavigationDropdown" class="w-5 h-5 text-slate-600" />
+                <!-- Nav Links -->
+                <nav class="flex-1 overflow-y-auto py-5 px-3 space-y-6">
+                    <div v-for="group in navGroups" :key="group.label">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3 mb-2">{{ group.label }}</p>
+                        <div class="space-y-1">
+                            <Link v-for="link in group.links" :key="link.route"
+                                :href="route(link.route)"
+                                @click="sidebarOpen = false"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-150 group"
+                                :class="isActive(link.route)
+                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-900/50'
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5'">
+                                <component :is="link.icon"
+                                    class="w-4 h-4 shrink-0 transition-colors"
+                                    :class="isActive(link.route) ? 'text-white' : 'text-slate-500 group-hover:text-white'" />
+                                {{ link.label }}
+                                <ChevronRight v-if="isActive(link.route)" class="w-3.5 h-3.5 ml-auto opacity-60" />
+                            </Link>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Bottom: View Site + User -->
+                <div class="border-t border-white/5 p-3 space-y-2">
+                    <a href="/" target="_blank"
+                        class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+                        <ExternalLink class="w-4 h-4 text-slate-500" />
+                        Lihat Landing Page
+                    </a>
+                    <Link :href="route('profile.edit')"
+                        class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+                        <User class="w-4 h-4 text-slate-500" />
+                        Profil Saya
+                    </Link>
+                    <Link :href="route('logout')" method="post" as="button"
+                        class="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all">
+                        <LogOut class="w-4 h-4" />
+                        Keluar
+                    </Link>
+
+                    <!-- User Info -->
+                    <div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-white/5 mt-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-black shrink-0">
+                            {{ user.name?.charAt(0).toUpperCase() }}
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-black text-white truncate">{{ user.name }}</p>
+                            <p class="text-[10px] text-slate-500 truncate">{{ user.email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ===== MAIN CONTENT ===== -->
+            <div class="flex-1 lg:ml-64 flex flex-col min-h-screen">
+
+                <!-- Top bar (mobile + header slot) -->
+                <header class="sticky top-0 z-20 bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-sm">
+                    <div class="flex items-center gap-4 px-4 sm:px-6 h-14">
+                        <!-- Mobile hamburger -->
+                        <button @click="sidebarOpen = !sidebarOpen"
+                            class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors shrink-0">
+                            <Menu v-if="!sidebarOpen" class="w-5 h-5 text-slate-600" />
                             <X v-else class="w-5 h-5 text-slate-600" />
                         </button>
-                    </div>
-                </div>
 
-                <!-- Mobile Menu -->
-                <Transition
-                    enter-active-class="transition duration-200 ease-out"
-                    enter-from-class="opacity-0 -translate-y-2"
-                    enter-to-class="opacity-100 translate-y-0"
-                >
-                    <div v-show="showingNavigationDropdown" class="sm:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-1">
-                        <template v-for="link in navLinks" :key="link.route">
-                            <Link :href="route(link.route)"
-                                @click="showingNavigationDropdown = false"
-                                class="flex items-center gap-2.5 px-4 py-3 rounded-xl font-bold text-sm transition-all"
-                                :class="route().current(link.route)
-                                    ? 'bg-blue-600 text-white'
-                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'">
-                                <component :is="link.icon" class="w-4 h-4" />
-                                {{ link.label }}
-                            </Link>
-                        </template>
-                        <div class="border-t border-slate-100 mt-3 pt-3">
-                            <div class="flex items-center gap-3 px-4 py-2">
-                                <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-black">
-                                    {{ user.name?.charAt(0).toUpperCase() }}
-                                </div>
-                                <div>
-                                    <p class="text-sm font-black text-slate-800">{{ user.name }}</p>
-                                    <p class="text-xs text-slate-400">{{ user.email }}</p>
-                                </div>
-                            </div>
-                            <Link :href="route('profile.edit')" class="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
-                                <User class="w-4 h-4" /> Profil Saya
-                            </Link>
-                            <Link :href="route('logout')" method="post" as="button"
-                                class="flex items-center gap-2 w-full px-4 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 rounded-xl transition-colors">
-                                <LogOut class="w-4 h-4" /> Keluar
-                            </Link>
+                        <!-- Page Header slot -->
+                        <div class="flex-1 min-w-0">
+                            <slot name="header" />
                         </div>
                     </div>
-                </Transition>
-            </nav>
+                </header>
 
-            <!-- Page Header -->
-            <header v-if="$slots.header" class="bg-white border-b border-slate-100 pt-16">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-                    <slot name="header" />
-                </div>
-            </header>
+                <!-- Page Content -->
+                <main class="flex-1">
+                    <slot />
+                </main>
 
-            <!-- Page Content -->
-            <main :class="$slots.header ? '' : 'pt-16'">
-                <slot />
-            </main>
+            </div>
         </div>
     </div>
 </template>

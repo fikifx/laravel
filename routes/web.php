@@ -18,8 +18,9 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('landingpage/index', [
-        'cars' => \App\Models\Car::latest()->get(),
-        'hero' => \App\Models\HeroSetting::getOrDefault(),
+        'cars'  => \App\Models\Car::latest()->get(),
+        'hero'  => \App\Models\HeroSetting::getOrDefault(),
+        'stats' => \App\Models\StatItem::getOrDefault(),
     ]);
 });
 
@@ -42,6 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/hero/edit', [\App\Http\Controllers\HeroSettingController::class, 'edit'])->name('hero.edit');
     Route::put('/hero', [\App\Http\Controllers\HeroSettingController::class, 'update'])->name('hero.update');
     Route::delete('/hero/reset', [\App\Http\Controllers\HeroSettingController::class, 'reset'])->name('hero.reset');
+
+    // Stats Section Settings
+    Route::get('/stats/edit', [\App\Http\Controllers\StatItemController::class, 'edit'])->name('stats.edit');
+    Route::put('/stats', [\App\Http\Controllers\StatItemController::class, 'update'])->name('stats.update');
+    Route::delete('/stats/reset', [\App\Http\Controllers\StatItemController::class, 'reset'])->name('stats.reset');
 });
 
 require __DIR__.'/auth.php';

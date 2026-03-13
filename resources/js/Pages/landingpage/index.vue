@@ -16,6 +16,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    stats: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const isMenuOpen = ref(false);
@@ -27,14 +31,8 @@ const orderWhatsApp = (name, type = '') => {
     window.open(`https://wa.me/6282339333202?text=${msg}`, '_blank');
 };
 
-const stats = [
-    { target: 50, suffix: '+', label: 'Unit Armada', fixed: null },
-    { target: 8, suffix: '+', label: 'Tahun Berpengalaman', fixed: null },
-    { target: 2000, suffix: '+', label: 'Pelanggan Puas', fixed: null },
-    { target: null, suffix: '24/7', label: 'Siap Melayani', fixed: '24/7' },
-];
-
-const statValues = ref(stats.map(() => 0));
+// Stats — use from server prop; defaults are already resolved server-side via StatItem::getOrDefault()
+const statValues = ref(props.stats.map(() => 0));
 const statsRef = ref(null);
 const statsAnimated = ref(false);
 
@@ -57,8 +55,8 @@ onMounted(() => {
         (entries) => {
             if (entries[0].isIntersecting && !statsAnimated.value) {
                 statsAnimated.value = true;
-                stats.forEach((stat, i) => {
-                    if (stat.target !== null) animateStat(i, stat.target);
+                props.stats.forEach((stat, i) => {
+                    if (stat.target !== null && stat.target !== undefined) animateStat(i, Number(stat.target));
                 });
             }
         },
@@ -292,9 +290,9 @@ onUnmounted(() => {
         <section ref="statsRef" class="py-14 bg-blue-600">
             <div class="max-w-5xl mx-auto px-4">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div v-for="(stat, i) in stats" :key="stat.label" class="text-center">
+                    <div v-for="(stat, i) in stats" :key="stat.label ?? i" class="text-center">
                         <p class="text-3xl md:text-4xl font-black text-white mb-1 tabular-nums">
-                            <template v-if="stat.fixed">{{ stat.fixed }}</template>
+                            <template v-if="stat.fixed_value || stat.fixed">{{ stat.fixed_value || stat.fixed }}</template>
                             <template v-else>{{ statValues[i].toLocaleString('id-ID') }}{{ stat.suffix }}</template>
                         </p>
                         <p class="text-sm text-blue-100 font-semibold">{{ stat.label }}</p>

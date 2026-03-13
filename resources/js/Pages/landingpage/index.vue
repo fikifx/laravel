@@ -7,6 +7,13 @@ import {
     Sparkles, Trophy, Users2, Zap, Car, CalendarCheck2, HelpCircle
 } from 'lucide-vue-next';
 
+const props = defineProps({
+    cars: {
+        type: Array,
+        default: () => [],
+    }
+});
+
 const isMenuOpen = ref(false);
 const activeFaq = ref(null);
 const toggleMenu = () => { isMenuOpen.value = !isMenuOpen.value; };
@@ -56,21 +63,25 @@ onMounted(() => {
     if (statsRef.value) statsObserver.observe(statsRef.value);
 });
 
-const cars = [
-    { name: 'New Avanza', image: '/image/New-Avanza-Silver-Metallic-2019.jpg', seats: 7, trans: 'AT/MT', year: 2022, priceSopir: 'Rp. 600.000', priceLepas: 'Rp. 350.000 /24 jam', tag: 'Populer' },
-    { name: 'New Innova Reborn', image: '/image/inova reboon.webp', seats: 7, trans: 'Matic', year: 2023, priceSopir: 'Rp. 950.000 /12 jam', priceLepas: 'Rp. 750.000 /24 jam' },
-    { name: 'Hiace Commuter', image: '/image/Hiace Commuter.jpg', seats: 15, trans: 'Manual', year: 2021, priceSopir: 'Rp. 1.100.000 /12 jam', priceLepas: null, tag: 'Grup Besar' },
-    { name: 'Pajero Sport', image: '/image/Pajero.jpg', seats: 7, trans: 'Matic', year: 2023, priceSopir: 'Rp. 2.000.000', priceLepas: 'Rp. 1.700.000 /24 jam' },
-    { name: 'New Innova Zenix', image: '/image/New-Zenix.webp', seats: 7, trans: 'Hybrid/AT', year: 2024, priceSopir: 'Rp. 1.200.000', priceLepas: 'Rp. 900.000 /24 jam' },
-    { name: 'New Veloz', image: '/image/New-Veloz.webp', seats: 7, trans: 'AT/MT', year: 2024, priceSopir: 'Rp. 650.000', priceLepas: 'Rp. 400.000 /24 jam' },
-    { name: 'Toyota Fortuner VRZ', image: '/image/Fortuner.jpg', seats: 7, trans: 'Matic', year: 2023, priceSopir: 'Rp. 1.800.000', priceLepas: 'Rp. 1.500.000 /24 jam' },
-    { name: 'Hiace Premio', image: '/image/Hiace Premi.jpeg', seats: 12, trans: 'AT', year: 2022, priceSopir: 'Rp. 1.400.000 /12 jam', priceLepas: null, tag: 'Kemewahan Grup' },
-    { name: 'Toyota Alphard', image: '/image/Alphard.webp', seats: 7, trans: 'Matic', year: 2022, priceSopir: 'Rp. 3.500.000 /12 jam', priceLepas: null, tag: 'Premium' },
+const defaultCars = [
+    { name: 'New Avanza', image: '/image/New-Avanza-Silver-Metallic-2019.jpg', seats: 7, transmission: 'AT/MT', year: 2022, price_sopir: 'Rp. 600.000', price_lepas: 'Rp. 350.000 /24 jam', tag: 'Populer' },
+    { name: 'New Innova Reborn', image: '/image/inova reboon.webp', seats: 7, transmission: 'Matic', year: 2023, price_sopir: 'Rp. 950.000 /12 jam', price_lepas: 'Rp. 750.000 /24 jam' },
+    { name: 'Hiace Commuter', image: '/image/Hiace Commuter.jpg', seats: 15, transmission: 'Manual', year: 2021, price_sopir: 'Rp. 1.100.000 /12 jam', price_lepas: null, tag: 'Grup Besar' },
+    { name: 'Pajero Sport', image: '/image/Pajero.jpg', seats: 7, transmission: 'Matic', year: 2023, price_sopir: 'Rp. 2.000.000', price_lepas: 'Rp. 1.700.000 /24 jam' },
+    { name: 'New Innova Zenix', image: '/image/New-Zenix.webp', seats: 7, transmission: 'Hybrid/AT', year: 2024, price_sopir: 'Rp. 1.200.000', price_lepas: 'Rp. 900.000 /24 jam' },
+    { name: 'New Veloz', image: '/image/New-Veloz.webp', seats: 7, transmission: 'AT/MT', year: 2024, price_sopir: 'Rp. 650.000', price_lepas: 'Rp. 400.000 /24 jam' },
+    { name: 'Toyota Fortuner VRZ', image: '/image/Fortuner.jpg', seats: 7, transmission: 'Matic', year: 2023, price_sopir: 'Rp. 1.800.000', price_lepas: 'Rp. 1.500.000 /24 jam' },
+    { name: 'Hiace Premio', image: '/image/Hiace Premi.jpeg', seats: 12, transmission: 'AT', year: 2022, price_sopir: 'Rp. 1.400.000 /12 jam', price_lepas: null, tag: 'Kemewahan Grup' },
+    { name: 'Toyota Alphard', image: '/image/Alphard.webp', seats: 7, transmission: 'Matic', year: 2022, price_sopir: 'Rp. 3.500.000 /12 jam', price_lepas: null, tag: 'Premium' },
 ];
+
+const allCars = computed(() => {
+    return props.cars && props.cars.length > 0 ? props.cars : defaultCars;
+});
 
 const showAllCars = ref(false);
 const displayedCars = computed(() => {
-    return showAllCars.value ? cars : cars.slice(0, 8);
+    return showAllCars.value ? allCars.value : allCars.value.slice(0, 8);
 });
 
 const benefits = [
@@ -305,11 +316,12 @@ onUnmounted(() => {
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    <div v-for="car in displayedCars" :key="car.name"
-                        class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                    <template v-for="car in displayedCars" :key="car.name">
+                        <div v-if="car"
+                            class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col group">
                         <!-- Image -->
                         <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                            <img :src="car.image" :alt="car.name"
+                            <img :src="car.image_url || car.image" :alt="car.name"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             <div v-if="car.tag"
                                 class="absolute top-3 left-3 bg-blue-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -327,15 +339,15 @@ onUnmounted(() => {
                                     <p class="text-[10px] text-blue-400 font-bold uppercase tracking-wider mb-0.5">
                                         Dengan Sopir
                                         + BBM</p>
-                                    <p class="text-sm font-black text-blue-700">{{ car.priceSopir }}</p>
+                                    <p class="text-sm font-black text-blue-700">{{ car.price_sopir }}</p>
                                 </div>
                                 <div class="bg-slate-50 rounded-xl p-3">
                                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">
                                         Lepas Kunci
                                     </p>
                                     <p class="text-sm font-bold"
-                                        :class="car.priceLepas ? 'text-slate-700' : 'text-slate-300'">
-                                        {{ car.priceLepas || 'Tidak Tersedia' }}</p>
+                                        :class="car.price_lepas ? 'text-slate-700' : 'text-slate-300'">
+                                        {{ car.price_lepas || 'Tidak Tersedia' }}</p>
                                 </div>
                             </div>
 
@@ -351,7 +363,7 @@ onUnmounted(() => {
                                 </span>
                                 <span class="text-slate-200">|</span>
                                 <span class="flex items-center gap-1">
-                                    <Key class="w-3 h-3" /> {{ car.trans }}
+                                    <Key class="w-3 h-3" /> {{ car.transmission }}
                                 </span>
                             </div>
 
@@ -362,7 +374,8 @@ onUnmounted(() => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </template>
+            </div>
 
                 <div v-if="cars.length > 8" class="mt-12 text-center">
                     <button @click="showAllCars = !showAllCars"

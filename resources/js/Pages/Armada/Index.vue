@@ -22,17 +22,25 @@ const deleteCar = (id) => {
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="font-black text-xl text-slate-800 leading-tight">
-                    Kelola <span class="text-blue-600">Armada</span>
-                </h2>
-                <Link
-                    :href="route('armada.create')"
-                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-widest rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95"
-                >
-                    <Plus class="w-4 h-4" />
-                    Tambah Armada
-                </Link>
+            <div class="flex items-center justify-between w-full">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Car class="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div>
+                        <h2 class="font-black text-lg text-slate-800 leading-none">Kelola Armada</h2>
+                        <p class="text-xs text-slate-400 font-medium">Atur unit kendaraan rental Anda</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <Link
+                        :href="route('armada.create')"
+                        class="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95"
+                    >
+                        <Plus class="w-3.5 h-3.5" />
+                        Tambah Armada
+                    </Link>
+                </div>
             </div>
         </template>
 

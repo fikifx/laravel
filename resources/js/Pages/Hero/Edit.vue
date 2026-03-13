@@ -52,28 +52,25 @@ const preview = (field) => form[field] || defaults[field];
     <Head title="Kelola Hero Section" />
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <Link :href="route('dashboard')" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-                        <ArrowLeft class="w-4 h-4 text-slate-600" />
-                    </Link>
-                    <div class="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center">
+            <div class="flex items-center justify-between w-full">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 bg-purple-100 rounded-lg flex items-center justify-center">
                         <LayoutTemplate class="w-4 h-4 text-purple-600" />
                     </div>
                     <div>
-                        <h2 class="font-black text-xl text-slate-800">Hero Section</h2>
+                        <h2 class="font-black text-lg text-slate-800 leading-none">Hero Section</h2>
                         <p class="text-xs text-slate-400 font-medium">Bagian utama landing page</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" @click="doReset"
-                        class="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-red-200 text-red-500 hover:bg-red-50 text-sm font-bold transition-all">
-                        <RotateCcw class="w-4 h-4" />
+                        class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-200 text-red-500 hover:bg-red-50 text-xs font-bold transition-all">
+                        <RotateCcw class="w-3.5 h-3.5" />
                         Reset Default
                     </button>
                     <button @click="submit" :disabled="form.processing"
-                        class="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-black rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95 disabled:opacity-60">
-                        <Save class="w-4 h-4" />
+                        class="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95 disabled:opacity-60">
+                        <Save class="w-3.5 h-3.5" />
                         Simpan Perubahan
                     </button>
                 </div>
